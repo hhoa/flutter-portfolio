@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/bloc/bloc_homepage.dart';
 import 'package:flutter_app_web/bloc/bloc_provider.dart';
+import 'package:flutter_app_web/res/colors.dart';
+import 'package:flutter_app_web/widgets/my_appbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,60 +14,36 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Web Portfolio',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: BlocProvider(
         bloc: BlocHomePage(),
-        child: MyHomePage(title: 'Flutter Demo Home Page'),
+        child: MyHomePage(),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      backgroundColor: MyAssetColor.backgroundColor,
+      body: Column(
+        children: [
+          MyAppBar(),
+//          MyPageView(),
+        ],
+      )
     );
   }
 }
