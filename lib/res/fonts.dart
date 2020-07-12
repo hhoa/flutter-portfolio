@@ -26,10 +26,17 @@ class MyAssetFonts {
       fontSize: 1.4 * oneRem
   );
 
-  static TextStyle boldName = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 24,
-    height: 30 / 24,
-    color: Color(0xff453E3E),
+  static TextStyle bigBoldName = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 3 * oneRem,
+    fontFamily: fontFamily,
+    color: Colors.black,
+  );
+
+  static TextStyle descriptionName = TextStyle(
+    fontWeight: FontWeight.w300,
+    fontSize: 1.3 * oneRem,
+    fontFamily: fontFamily,
+    color: MyAssetColor.descriptionColor,
   );
 }

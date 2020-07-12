@@ -3,6 +3,7 @@ import 'package:flutter_app_web/bloc/bloc_homepage.dart';
 import 'package:flutter_app_web/bloc/bloc_provider.dart';
 import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/widgets/my_appbar.dart';
+import 'package:flutter_app_web/widgets/my_profile.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,6 +34,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  PageController _pageViewController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageViewController = PageController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +49,20 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           MyAppBar(),
-//          MyPageView(),
+          _buildPageView(),
         ],
       )
+    );
+  }
+
+  Widget _buildPageView() {
+    return Expanded(
+      child: PageView(
+        controller: _pageViewController,
+        children: [
+          MyProfile(),
+        ],
+      ),
     );
   }
 }
