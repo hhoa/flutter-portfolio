@@ -1,9 +1,12 @@
 import 'dart:ui';
+import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/bloc/bloc_homepage.dart';
+import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
+import 'package:flutter_app_web/res/strings.dart';
 
 class MyProfile extends StatelessWidget {
   @override
@@ -35,6 +38,29 @@ class MyProfile extends StatelessWidget {
             Text(
               "I'm a passionate Mobile Developer on HCM city",
               style: MyAssetFonts.descriptionName,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            RaisedButton(
+              hoverColor: Colors.black,
+              color: MyAssetColor.appColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              onPressed: () {
+                html.window.open(MyConstants.linkCV, 'Download CV');
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "Download CV",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: MyAssetFonts.fontFamily,
+                      fontSize: 16),
+                ),
+              ),
             ),
           ],
         ),
