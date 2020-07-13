@@ -53,57 +53,55 @@ class MyTimeLine extends StatelessWidget {
 
   Widget timelineExperience(String time, String exp, String description,
       {bool isFirst = false, bool isLast = false, String logo = ""}) {
-    return Expanded(
-      child: TimelineTile(
-        alignment: TimelineAlign.manual,
-        lineX: 0.3,
-        isFirst: isFirst,
-        isLast: isLast,
-        indicatorStyle: IndicatorStyle(
-          width: 40,
-          height: 40,
-          indicator: Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              border: Border.all(),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                logo,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
-        leftChild: Container(
-          padding: const EdgeInsets.only(right: 16),
-          child: Text(
-            time,
-            textAlign: TextAlign.right,
-            style: MyAssetFonts.companyDescription,
-          ),
-        ),
-        rightChild: Container(
-          padding: const EdgeInsets.only(left: 16),
+    return TimelineTile(
+      alignment: TimelineAlign.manual,
+      lineX: 0.3,
+      isFirst: isFirst,
+      isLast: isLast,
+      indicatorStyle: IndicatorStyle(
+        width: 40,
+        height: 40,
+        indicator: Container(
           alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                exp,
-                style: MyAssetFonts.companyName,
-              ),
-              SizedBox(height: 16),
-              Text(
-                description,
-                style: MyAssetFonts.companyDescription,
-              ),
-            ],
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            border: Border.all(),
           ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(
+              logo,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+      leftChild: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Text(
+          time,
+          textAlign: TextAlign.right,
+          style: MyAssetFonts.companyDescription,
+        ),
+      ),
+      rightChild: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+        alignment: Alignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              exp,
+              style: MyAssetFonts.companyName,
+            ),
+            SizedBox(height: 16),
+            Text(
+              description,
+              style: MyAssetFonts.companyDescription,
+            ),
+          ],
         ),
       ),
     );

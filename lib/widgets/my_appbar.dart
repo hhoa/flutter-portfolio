@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/res/colors.dart';
+import 'package:flutter_app_web/res/constants.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/widgets/base_widget.dart';
 
@@ -24,7 +25,7 @@ class MyAppBarMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: MyConstants.heightAppBar,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -59,7 +60,7 @@ class MyAppBarMobile extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      height: 80,
+                      height: MyConstants.heightAppBar,
                       child: Row(
                         mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
@@ -112,7 +113,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
-        height: 80,
+        height: MyConstants.heightAppBar,
         decoration: BoxDecoration(
           color: isHover ? Colors.white : MyAssetColor.backgroundColor,
         ),

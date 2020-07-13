@@ -5,6 +5,7 @@ import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/widgets/my_appbar.dart';
 import 'package:flutter_app_web/widgets/my_experience.dart';
 import 'package:flutter_app_web/widgets/my_profile.dart';
+import 'package:flutter_app_web/widgets/my_projects.dart';
 
 void main() {
   runApp(MyApp());
@@ -66,12 +67,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildPageView() {
     return Expanded(
-      child: PageView(
+      child: ListView(
         scrollDirection: Axis.vertical,
         controller: _pageViewController,
         children: [
           MyProfile(),
           MyExperience(),
+          MyProjects(),
         ],
       ),
     );

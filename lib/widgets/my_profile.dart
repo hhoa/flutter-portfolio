@@ -11,11 +11,16 @@ import 'package:flutter_app_web/res/constants.dart';
 class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _buildImage(),
-        _buildText(),
-      ],
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return Container(
+      height: screenHeight - MyConstants.heightAppBar,
+      child: Stack(
+        children: [
+          _buildImage(),
+          _buildText(),
+        ],
+      ),
     );
   }
 
