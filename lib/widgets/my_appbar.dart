@@ -1,13 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/res/fonts.dart';
+import 'package:flutter_app_web/widgets/base_widget.dart';
 
-class MyAppBar extends StatefulWidget {
+class MyAppBar extends BaseWidget {
   @override
-  _MyAppBarState createState() => _MyAppBarState();
+  Widget buildPhone(BuildContext context) {
+    return MyAppBarMobile();
+  }
+
+  @override
+  Widget buildWeb(BuildContext context) {
+    return MyAppBarWeb();
+  }
+
+  @override
+  Widget buildTable(BuildContext context) {
+    return MyAppBarWeb();
+  }
 }
 
-class _MyAppBarState extends State<MyAppBar> {
+class MyAppBarMobile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 80,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(),
+          SpecialText("Me."),
+          IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: MyAssetColor.appColor,
+              ),
+              onPressed: () {
+
+              }),
+        ],
+      ),
+    );
+  }
+}
+
+class MyAppBarWeb extends StatefulWidget {
+  @override
+  _MyAppBarWebState createState() => _MyAppBarWebState();
+}
+
+class _MyAppBarWebState extends State<MyAppBarWeb> {
   bool isHover = false;
 
   @override
@@ -35,21 +77,11 @@ class _MyAppBarState extends State<MyAppBar> {
           children: [
             buildText("Home", isChosen: true),
             buildText("Work", isChosen: false),
-            buildSpecialText("Me."),
+            SpecialText("Me."),
             buildText("Projects", isChosen: false),
             buildText("Contact", isChosen: false),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildSpecialText(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Text(
-        text,
-        style: MyAssetFonts.specialAppBarText,
       ),
     );
   }
@@ -62,6 +94,23 @@ class _MyAppBarState extends State<MyAppBar> {
         style: isChosen
             ? MyAssetFonts.appBarTextSelected
             : MyAssetFonts.appBarTextUnselected,
+      ),
+    );
+  }
+}
+
+class SpecialText extends StatelessWidget {
+  final String text;
+
+  SpecialText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Text(
+        text,
+        style: MyAssetFonts.specialAppBarText,
       ),
     );
   }

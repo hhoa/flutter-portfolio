@@ -35,23 +35,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController _pageViewController;
+  BlocHomePage _bloc;
 
   @override
   void initState() {
     super.initState();
+
+    _bloc = BlocProvider.of<BlocHomePage>(context);
     _pageViewController = PageController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: MyAssetColor.backgroundColor,
-      body: Column(
-        children: [
-          MyAppBar(),
-          _buildPageView(),
-        ],
-      )
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        _bloc.updateLayoutType(constraint.maxWidth);
+        return Scaffold(
+            backgroundColor: MyAssetColor.backgroundColor,
+            body: Column(
+              children: [
+                MyAppBar(),
+                _buildPageView(),
+              ],
+            )
+        );
+      },
     );
   }
 
