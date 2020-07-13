@@ -3,6 +3,7 @@ import 'package:flutter_app_web/bloc/bloc_homepage.dart';
 import 'package:flutter_app_web/bloc/bloc_provider.dart';
 import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/widgets/my_appbar.dart';
+import 'package:flutter_app_web/widgets/my_experience.dart';
 import 'package:flutter_app_web/widgets/my_profile.dart';
 
 void main() {
@@ -66,9 +67,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildPageView() {
     return Expanded(
       child: PageView(
+        scrollDirection: Axis.vertical,
         controller: _pageViewController,
         children: [
           MyProfile(),
+          MyExperience(),
         ],
       ),
     );

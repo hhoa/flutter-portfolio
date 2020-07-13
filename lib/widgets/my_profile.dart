@@ -6,7 +6,7 @@ import 'package:flutter_app_web/bloc/bloc_homepage.dart';
 import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
-import 'package:flutter_app_web/res/strings.dart';
+import 'package:flutter_app_web/res/constants.dart';
 
 class MyProfile extends StatelessWidget {
   @override
@@ -23,7 +23,7 @@ class MyProfile extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.only(left: 20),
+        margin: EdgeInsets.only(left: MyConstants.paddingHorizontal),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,

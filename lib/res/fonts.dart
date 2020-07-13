@@ -39,4 +39,18 @@ class MyAssetFonts {
     fontFamily: fontFamily,
     color: MyAssetColor.descriptionColor,
   );
+
+  static TextStyle companyName = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 1.4 * oneRem,
+    fontFamily: fontFamily,
+    color: Colors.black,
+  );
+
+  static TextStyle companyDescription = TextStyle(
+    fontWeight: FontWeight.w300,
+    fontSize: 1 * oneRem,
+    fontFamily: fontFamily,
+    color: MyAssetColor.descriptionColor,
+  );
 }
