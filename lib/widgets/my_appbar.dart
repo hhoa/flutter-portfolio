@@ -35,12 +35,57 @@ class MyAppBarMobile extends StatelessWidget {
                 Icons.menu,
                 color: MyAssetColor.appColor,
               ),
-              onPressed: () {
-
-              }),
+              onPressed: () => openDialog(context)),
         ],
       ),
     );
+  }
+
+  void openDialog(BuildContext context) {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: "App Bar Dialog",
+        transitionDuration: Duration(milliseconds: 200),
+        pageBuilder: (context, anim1, anim2) {
+          return GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Scaffold(
+              backgroundColor: MyAssetColor.backgroundColor.withOpacity(0.5),
+              body: Container(
+                color: MyAssetColor.backgroundColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 80,
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(),
+                          SpecialText("Me."),
+                          IconButton(
+                            icon: Icon(Icons.close,
+                                color: MyAssetColor.appColor),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    NormalText("Home", isChosen: true),
+                    NormalText("Work", isChosen: false),
+                    NormalText("Projects", isChosen: false),
+                    NormalText("Contact", isChosen: false),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
 
@@ -75,20 +120,28 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            buildText("Home", isChosen: true),
-            buildText("Work", isChosen: false),
+            NormalText("Home", isChosen: true),
+            NormalText("Work", isChosen: false),
             SpecialText("Me."),
-            buildText("Projects", isChosen: false),
-            buildText("Contact", isChosen: false),
+            NormalText("Projects", isChosen: false),
+            NormalText("Contact", isChosen: false),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget buildText(String text, {bool isChosen = false}) {
+class NormalText extends StatelessWidget {
+  final String text;
+  final bool isChosen;
+
+  NormalText(this.text, {this.isChosen = false});
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: Text(
         text,
         style: isChosen
@@ -98,6 +151,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
     );
   }
 }
+
 
 class SpecialText extends StatelessWidget {
   final String text;
