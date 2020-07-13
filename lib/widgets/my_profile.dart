@@ -1,15 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_web/bloc/bloc_homepage.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
 
-class MyProfile extends StatefulWidget {
-  @override
-  _MyProfileState createState() => _MyProfileState();
-}
-
-class _MyProfileState extends State<MyProfile> {
+class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -47,29 +43,29 @@ class _MyProfileState extends State<MyProfile> {
   }
 
   Widget _buildImage() {
+    double sigma = BlocHomePage.currentType == LayoutType.Web ? 0 : 3;
+    double opacity = BlocHomePage.currentType == LayoutType.Web ? 1 : 0.4;
+
     return Positioned(
       right: 0,
       top: 0,
       bottom: 0,
       child: Stack(
         children: [
-          Image.asset(
-            MyAssetImages.imageProfile,
-            fit: BoxFit.fitHeight,
+          Opacity(
+            opacity: opacity,
+            child: Image.asset(
+              MyAssetImages.imageProfile,
+              fit: BoxFit.fitHeight,
+            ),
           ),
           Positioned.fill(
-            child: LayoutBuilder(
-              builder: (context, constraint) {
-                double sigma = constraint.minWidth < 991 ? 3 : 0;
-
-                return BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: sigma,
-                    sigmaY: sigma,
-                  ),
-                  child: Container(),
-                );
-              },
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: sigma,
+                sigmaY: sigma,
+              ),
+              child: Container(),
             ),
           ),
         ],
