@@ -7,6 +7,7 @@ import 'package:flutter_app_web/widgets/my_contact.dart';
 import 'package:flutter_app_web/widgets/my_experience.dart';
 import 'package:flutter_app_web/widgets/my_profile.dart';
 import 'package:flutter_app_web/widgets/my_projects.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,7 +38,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  PageController _pageViewController;
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   BlocHomePage _bloc;
 
   @override
@@ -45,7 +47,15 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     _bloc = BlocProvider.of<BlocHomePage>(context);
-    _pageViewController = PageController();
+    _bloc.itemScrollController = itemScrollController;
+    itemPositionsListener.itemPositions.addListener(() {
+      List<ItemPosition> itemPositions = itemPositionsListener.itemPositions.value.toList();
+//      print("====== Start ======");
+//      for (int i = 0; i < itemPositions.length; i++) {
+//        print("pos: ${itemPositions[i].index}");
+//      }
+//      print("====== End ======");
+    });
   }
 
   @override
@@ -68,15 +78,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildPageView() {
     return Expanded(
-      child: ListView(
+      child: ScrollablePositionedList.builder(
+        itemCount: 4,
         scrollDirection: Axis.vertical,
-        controller: _pageViewController,
-        children: [
-          MyProfile(),
-          MyExperience(),
-          MyProjects(),
-          MyContact(),
-        ],
+        itemScrollController: itemScrollController,
+        itemPositionsListener: itemPositionsListener,
+        itemBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return MyProfile();
+            case 1:
+              return MyExperience();
+            case 2:
+              return MyProjects();
+            case 3:
+              return MyContact();
+            default:
+              return Container();
+          }
+        },
       ),
     );
   }
