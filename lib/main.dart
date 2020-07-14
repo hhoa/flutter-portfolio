@@ -79,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ScrollablePositionedList.builder(
         itemCount: 4,
         scrollDirection: Axis.vertical,
+        physics: const ClampingScrollPhysics(),
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionsListener,
         itemBuilder: (context, index) {
