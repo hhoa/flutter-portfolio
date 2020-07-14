@@ -3,6 +3,7 @@ import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/res/constants.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/widgets/base_widget.dart';
+import 'package:flutter_app_web/widgets/special_name.dart';
 
 class MyAppBar extends BaseWidget {
   @override
@@ -30,7 +31,7 @@ class MyAppBarMobile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(),
-          SpecialText("Me."),
+          SpecialTextName(),
           IconButton(
               icon: Icon(
                 Icons.menu,
@@ -66,7 +67,7 @@ class MyAppBarMobile extends StatelessWidget {
                         MainAxisAlignment.spaceBetween,
                         children: [
                           Container(),
-                          SpecialText("Me."),
+                          SpecialTextName(),
                           IconButton(
                             icon: Icon(Icons.close,
                                 color: MyAssetColor.appColor),
@@ -123,7 +124,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
           children: [
             NormalText("Home", isChosen: true),
             NormalText("Work", isChosen: false),
-            SpecialText("Me."),
+            SpecialTextName(),
             NormalText("Projects", isChosen: false),
             NormalText("Contact", isChosen: false),
           ],
@@ -154,19 +155,4 @@ class NormalText extends StatelessWidget {
 }
 
 
-class SpecialText extends StatelessWidget {
-  final String text;
 
-  SpecialText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Text(
-        text,
-        style: MyAssetFonts.specialAppBarText,
-      ),
-    );
-  }
-}

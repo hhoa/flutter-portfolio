@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
+import 'package:flutter_app_web/widgets/my_title.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import 'package:flutter_app_web/widgets/base_widget.dart';
@@ -27,11 +28,12 @@ class MyTimeLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        MyTitle("Work Experience"),
         timelineExperience(
           "05/2019 - Now",
           "Sendo",
           "Sendo is one of the leading e-commerce in Vietnam. At sendo I build high quality landing pages such as Flash Sale and Daily Deal to integrate with Buyer app.",
-          isFirst: true,
+          isFirst: false,
           logo: MyAssetImages.imageSendo,
         ),
         timelineExperience(
@@ -66,7 +68,6 @@ class MyTimeLine extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
-            border: Border.all(),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),

@@ -33,6 +33,13 @@ class MyAssetFonts {
     color: Colors.black,
   );
 
+  static TextStyle bigBoldTitle = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 2 * oneRem,
+    fontFamily: fontFamily,
+    color: Colors.black,
+  );
+
   static TextStyle descriptionName = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 1.3 * oneRem,
@@ -52,5 +59,12 @@ class MyAssetFonts {
     fontSize: 1 * oneRem,
     fontFamily: fontFamily,
     color: MyAssetColor.descriptionColor,
+  );
+
+  static TextStyle followText = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 1.1 * oneRem,
+    fontFamily: fontFamily,
+    color: Colors.black,
   );
 }

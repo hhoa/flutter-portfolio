@@ -3,6 +3,7 @@ import 'package:flutter_app_web/bloc/bloc_homepage.dart';
 import 'package:flutter_app_web/bloc/bloc_provider.dart';
 import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/widgets/my_appbar.dart';
+import 'package:flutter_app_web/widgets/my_contact.dart';
 import 'package:flutter_app_web/widgets/my_experience.dart';
 import 'package:flutter_app_web/widgets/my_profile.dart';
 import 'package:flutter_app_web/widgets/my_projects.dart';
@@ -74,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
           MyProfile(),
           MyExperience(),
           MyProjects(),
+          MyContact(),
         ],
       ),
     );

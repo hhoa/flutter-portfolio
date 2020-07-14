@@ -16,4 +16,12 @@ class MyAssetImages {
   static String imageLmx = "assets/images/lmx_screen.jpeg";
 
   static String imageLuckySale = "assets/images/luckysale_screen.jpeg";
+
+  static String imageFacebook = "assets/images/ic_facebook.png";
+
+  static String imageGithub = "assets/images/ic_github.png";
+
+  static String imageLinkedin = "assets/images/ic_linkedin.png";
+
+  static String imageSkype = "assets/images/ic_skype.png";
 }

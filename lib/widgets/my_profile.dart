@@ -38,14 +38,14 @@ class MyProfile extends StatelessWidget {
               style: MyAssetFonts.bigBoldName,
             ),
             SizedBox(
-              height: 16,
+              height: 30,
             ),
             Text(
               "I'm a passionate Mobile Developer on HCM city",
               style: MyAssetFonts.descriptionName,
             ),
             SizedBox(
-              height: 16,
+              height: 30,
             ),
             RaisedButton(
               hoverColor: Colors.black,

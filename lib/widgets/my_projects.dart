@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_web/res/constants.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
 import 'package:flutter_app_web/widgets/base_widget.dart';
+import 'package:flutter_app_web/widgets/my_title.dart';
 
 class MyProjects extends BaseWidget {
   @override
@@ -53,35 +55,41 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> listImages = [
-      MyAssetImages.imageFlashSale,
-      MyAssetImages.imageDailyDeal,
-      MyAssetImages.imageLmx,
-      MyAssetImages.imageLuckySale,
-      MyAssetImages.imageGos,
+    List<List<String>> listImages = [
+      [MyAssetImages.imageFlashSale,MyConstants.descFlashSale],
+      [MyAssetImages.imageDailyDeal, MyConstants.descDailyDeal],
+      [MyAssetImages.imageLmx, MyConstants.descLmx],
+      [MyAssetImages.imageLuckySale, MyConstants.descLuckySale],
+      [MyAssetImages.imageGos, MyConstants.descGos],
     ];
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: screenHeight / 1.4,
-      width: screenWidth,
-      child: PageView.builder(
-          controller: _pageController,
-          itemBuilder: (context, index) {
-            int page = index % 5;
+    return Column(
+      children: [
+        MyTitle("Recent Projects"),
+        Container(
+          height: screenHeight / 1.4,
+          width: screenWidth,
+          margin: const EdgeInsets.only(bottom: 50),
+          child: PageView.builder(
+              controller: _pageController,
+              itemBuilder: (context, index) {
+                int page = index % 5;
 
-            return Container(
-              width: screenWidth / 2,
-              height: screenHeight / 1.4,
-              child: ImageDescription(
-                listImages[page],
-                isCurrent: currentPage == page,
-                description: "Item $index",
-              ),
-            );
-          }),
+                return Container(
+                  width: screenWidth / 2,
+                  height: screenHeight / 1.4,
+                  child: ImageDescription(
+                    listImages[page][0],
+                    description: listImages[page][1],
+                    isCurrent: currentPage == page,
+                  ),
+                );
+              }),
+        ),
+      ],
     );
   }
 }
@@ -144,9 +152,13 @@ class _ImageDescriptionState extends State<ImageDescription> {
             isHover
                 ? Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      widget.description,
-                      style: MyAssetFonts.descriptionName,
+                    child: Container(
+                      width: 300,
+                      child: Text(
+                        widget.description,
+                        textAlign: TextAlign.center,
+                        style: MyAssetFonts.descriptionName,
+                      ),
                     ),
                   )
                 : Container()
