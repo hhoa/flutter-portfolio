@@ -49,6 +49,14 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
   Widget build(BuildContext context) {
     return Container(
       height: MyConstants.heightAppBar,
+      decoration:
+          BoxDecoration(color: MyAssetColor.backgroundColor, boxShadow: [
+        BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 4,
+            spreadRadius: 4)
+      ]),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -134,14 +142,6 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
   void initState() {
     super.initState();
 
-    listTextWidgets =
-        List<Widget>.generate(titleAppBar.length, (index) {
-          return NormalText(titleAppBar[index],
-              onTap: () => tapPage(index), isChosen: index == currentPage);
-        }).toList();
-
-    listTextWidgets.insert(titleAppBar.length ~/ 2, SpecialTextName());
-
     _parentBloc = BlocProvider.of<BlocHomePage>(context);
     _parentBloc.pageStream.listen((int data) {
       setState(() {
@@ -152,6 +152,12 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
 
   @override
   Widget build(BuildContext context) {
+    listTextWidgets = List<Widget>.generate(titleAppBar.length, (index) {
+      return NormalText(titleAppBar[index],
+          onTap: () => tapPage(index), isChosen: index == currentPage);
+    }).toList();
+
+    listTextWidgets.insert(titleAppBar.length ~/ 2, SpecialTextName());
 
     return MouseRegion(
       onEnter: (event) {
@@ -168,8 +174,14 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
         duration: Duration(milliseconds: 200),
         height: MyConstants.heightAppBar,
         decoration: BoxDecoration(
-          color: isHover ? Colors.white : MyAssetColor.backgroundColor,
-        ),
+            color: isHover ? Colors.white : MyAssetColor.backgroundColor,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 4),
+                  blurRadius: 4,
+                  spreadRadius: 4)
+            ]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

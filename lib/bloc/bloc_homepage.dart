@@ -26,10 +26,12 @@ class BlocHomePage extends BlocBase {
     currentType = LayoutType.Phone;
   }
 
-  void changePageIndex(int index) {
+  void changePageIndex(int index, {bool isScroll = true}) {
     currentPage = index;
-    itemScrollController.scrollTo(
-        index: index, duration: Duration(milliseconds: 300));
+    if (isScroll) {
+      itemScrollController.scrollTo(
+          index: index, duration: Duration(milliseconds: 300));
+    }
     _pageStreamController.add(currentPage);
   }
 
