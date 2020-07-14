@@ -12,7 +12,7 @@ class MyExperience extends BaseWidget {
   }
 
   @override
-  Widget buildTable(BuildContext context) {
+  Widget buildTablet(BuildContext context) {
     return MyTimeLine();
   }
 

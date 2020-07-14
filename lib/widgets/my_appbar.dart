@@ -16,7 +16,7 @@ class MyAppBar extends BaseWidget {
   }
 
   @override
-  Widget buildTable(BuildContext context) {
+  Widget buildTablet(BuildContext context) {
     return MyAppBarWeb();
   }
 }

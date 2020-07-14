@@ -9,7 +9,7 @@ abstract class BaseWidget extends StatelessWidget {
     if (BlocHomePage.currentType == LayoutType.Web) {
       return buildWeb(context);
     } else if (BlocHomePage.currentType == LayoutType.Tablet) {
-      return buildTable(context);
+      return buildTablet(context);
     } else {
       return buildPhone(context);
     }
@@ -17,7 +17,7 @@ abstract class BaseWidget extends StatelessWidget {
 
   Widget buildWeb(BuildContext context);
 
-  Widget buildTable(BuildContext context);
+  Widget buildTablet(BuildContext context);
 
   Widget buildPhone(BuildContext context);
 
