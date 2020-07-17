@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_web/bloc/bloc_homepage.dart';
 import 'package:flutter_app_web/res/constants.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
@@ -118,6 +119,56 @@ class _ImageDescriptionState extends State<ImageDescription> {
       opacity = widget.isCurrent ? 1 : 0.5;
     }
 
+    return BlocHomePage.currentType == LayoutType.Phone ? buildPhone(sigma, opacity) : buildWeb(sigma, opacity);
+  }
+
+  Widget buildPhone(double sigma, double opacity) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          isHover = !isHover;
+        });
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            AnimatedOpacity(
+              duration: Duration(milliseconds: 200),
+              opacity: opacity,
+              child: Image.asset(
+                widget.image,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+            BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: sigma,
+                sigmaY: sigma,
+              ),
+              child: Container(),
+            ),
+            isHover
+                ? Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 300,
+                child: Text(
+                  widget.description,
+                  textAlign: TextAlign.center,
+                  style: MyAssetFonts.descriptionName,
+                ),
+              ),
+            )
+                : Container()
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildWeb(double sigma, double opacity) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: MouseRegion(
@@ -151,16 +202,16 @@ class _ImageDescriptionState extends State<ImageDescription> {
             ),
             isHover
                 ? Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 300,
-                      child: Text(
-                        widget.description,
-                        textAlign: TextAlign.center,
-                        style: MyAssetFonts.descriptionName,
-                      ),
-                    ),
-                  )
+              alignment: Alignment.center,
+              child: Container(
+                width: 300,
+                child: Text(
+                  widget.description,
+                  textAlign: TextAlign.center,
+                  style: MyAssetFonts.descriptionName,
+                ),
+              ),
+            )
                 : Container()
           ],
         ),
