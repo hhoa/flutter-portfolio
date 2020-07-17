@@ -1,5 +1,5 @@
 class MyAssetImages {
-  static String imageProfile = "assets/images/profile_fb.jpg";
+  static String imageProfile = "assets/images/profile_undraw.png";
 
   static String imageSendo = "assets/images/sendo_logo.png";
 

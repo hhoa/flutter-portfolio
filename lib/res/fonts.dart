@@ -61,6 +61,13 @@ class MyAssetFonts {
     color: MyAssetColor.descriptionColor,
   );
 
+  static TextStyle companyTimeline = TextStyle(
+    fontWeight: FontWeight.w200,
+    fontSize: 1 * oneRem,
+    fontFamily: fontFamily,
+    color: MyAssetColor.descriptionColor.withAlpha(150),
+  );
+
   static TextStyle followText = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 1.1 * oneRem,

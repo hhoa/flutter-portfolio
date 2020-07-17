@@ -24,13 +24,17 @@ class MyExperience extends BaseWidget {
 }
 
 class MyTimeLine extends StatelessWidget {
+  double screenWidth;
+
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+
     return Column(
       children: [
         MyTitle("Work Experience"),
         timelineExperience(
-          "05/2019 - Now",
+          "05/2019 - Present",
           "Sendo",
           "Sendo is one of the leading e-commerce in Vietnam. At sendo I build high quality landing pages such as Flash Sale and Daily Deal to integrate with Buyer app.",
           isFirst: false,
@@ -55,54 +59,54 @@ class MyTimeLine extends StatelessWidget {
 
   Widget timelineExperience(String time, String exp, String description,
       {bool isFirst = false, bool isLast = false, String logo = ""}) {
-    return TimelineTile(
-      alignment: TimelineAlign.manual,
-      lineX: 0.3,
-      isFirst: isFirst,
-      isLast: isLast,
-      indicatorStyle: IndicatorStyle(
-        width: 40,
-        height: 40,
-        indicator: Container(
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.symmetric(horizontal: screenWidth / 8),
+      child: TimelineTile(
+        alignment: TimelineAlign.left,
+        lineX: 0,
+        isFirst: isFirst,
+        isLast: isLast,
+        indicatorStyle: IndicatorStyle(
+          width: 40,
+          height: 40,
+          indicator: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                logo,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        rightChild: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                exp,
+                style: MyAssetFonts.companyName,
+              ),
+              Text(
+                time,
+                style: MyAssetFonts.companyTimeline,
+              ),
+              SizedBox(height: 16),
+              Text(
+                description,
+                style: MyAssetFonts.companyDescription,
+              ),
+            ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset(
-              logo,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-      leftChild: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Text(
-          time,
-          textAlign: TextAlign.right,
-          style: MyAssetFonts.companyDescription,
-        ),
-      ),
-      rightChild: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
-        alignment: Alignment.center,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              exp,
-              style: MyAssetFonts.companyName,
-            ),
-            SizedBox(height: 16),
-            Text(
-              description,
-              style: MyAssetFonts.companyDescription,
-            ),
-          ],
         ),
       ),
     );

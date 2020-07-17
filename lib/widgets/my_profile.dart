@@ -12,23 +12,24 @@ class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
       height: screenHeight - MyConstants.heightAppBar,
       child: Stack(
         children: [
-          _buildImage(),
-          _buildText(),
+          _buildImage(screenHeight),
+          _buildText(screenWidth),
         ],
       ),
     );
   }
 
-  Widget _buildText() {
+  Widget _buildText(double screenWidth) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.only(left: MyConstants.paddingHorizontal),
+        margin: EdgeInsets.symmetric(horizontal: screenWidth / 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,21 +74,25 @@ class MyProfile extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(double screenHeight) {
+    double padding = screenHeight / 8;
     double sigma = BlocHomePage.currentType == LayoutType.Web ? 0 : 3;
     double opacity = BlocHomePage.currentType == LayoutType.Web ? 1 : 0.4;
 
     return Positioned(
       right: 0,
-      top: 0,
-      bottom: 0,
+      top: padding,
+      bottom: padding,
       child: Stack(
         children: [
           Opacity(
             opacity: opacity,
-            child: Image.asset(
-              MyAssetImages.imageProfile,
-              fit: BoxFit.fitHeight,
+            child: Container(
+              height: screenHeight,
+              child: Image.asset(
+                MyAssetImages.imageProfile,
+                fit: BoxFit.fitHeight,
+              ),
             ),
           ),
           Positioned.fill(
