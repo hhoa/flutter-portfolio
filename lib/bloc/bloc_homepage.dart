@@ -13,7 +13,7 @@ class BlocHomePage extends BlocBase {
   Stream<int> get pageStream => _pageStreamController.stream;
 
   bool isShadow = false;
-  StreamController<bool> _appBarShadowController = StreamController();
+  StreamController<bool> _appBarShadowController = StreamController.broadcast();
   Stream<bool> get appBarShadowStream => _appBarShadowController.stream;
 
   void updateLayoutType(double screenWidth) {
@@ -30,11 +30,8 @@ class BlocHomePage extends BlocBase {
     currentType = LayoutType.Phone;
   }
 
-  void updateShadow(List<ItemPosition> itemPositions) {
-    bool isContainZero = false;
-    itemPositions.forEach((itemPosition) {
-      if (itemPosition.index == 0) isContainZero = true;
-    });
+  void updateShadow(int index) {
+    bool isContainZero = index == 0;
     if (isContainZero && isShadow) {
       isShadow = false;
       _appBarShadowController.add(isShadow);

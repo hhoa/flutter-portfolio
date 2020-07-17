@@ -37,7 +37,7 @@ class MyPageViewProjects extends StatefulWidget {
 
 class _MyPageViewProjectsState extends State<MyPageViewProjects> {
   PageController _pageController;
-  int currentPage = 2;
+  int currentPage = 3;
 
   @override
   void initState() {
@@ -159,7 +159,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                 ? Align(
                     alignment: Alignment.center,
                     child: Container(
-                      width: 300,
+                      width: 250,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,6 +169,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                             textAlign: TextAlign.center,
                             style: MyAssetFonts.descriptionName,
                           ),
+                          SizedBox(height: 8,),
                           widget.link.isEmpty
                               ? Container()
                               : InkWell(
@@ -176,7 +177,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                               html.window.open(widget.link, "Open link");
                             },
                             child: Text(
-                              "Open link",
+                              "More info",
                               style: MyAssetFonts.descriptionNameLink,
                             ),
                           ),
@@ -227,7 +228,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                 ? Align(
                     alignment: Alignment.center,
                     child: Container(
-                      width: 300,
+                      width: 250,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -237,6 +238,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                             textAlign: TextAlign.center,
                             style: MyAssetFonts.descriptionName,
                           ),
+                          SizedBox(height: 8,),
                           widget.link.isEmpty
                               ? Container()
                               : InkWell(
@@ -244,7 +246,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                                     html.window.open(widget.link, "Open link");
                                   },
                                   child: Text(
-                                    "Open link",
+                                    "More info",
                                     style: MyAssetFonts.descriptionNameLink,
                                   ),
                                 ),

@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _bloc.itemScrollController = itemScrollController;
     itemPositionsListener.itemPositions.addListener(() {
       List<ItemPosition> itemPositions = itemPositionsListener.itemPositions.value.toList();
-      _bloc.updateShadow(itemPositions);
+      _bloc.updateShadow(itemPositions[0].index);
       if (!itemPositions.contains(_bloc.currentPage) && itemPositions[0].index != _bloc.currentPage) {
         _bloc.changePageIndex(itemPositions[0].index, isScroll: false);
       }

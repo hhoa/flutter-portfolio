@@ -52,8 +52,7 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
         initialData: false,
         builder: (context, snapshot) {
           bool isShadow = snapshot.data ?? false;
-          return AnimatedContainer(
-            duration: Duration(milliseconds: 200),
+          return Container(
             height: MyConstants.heightAppBar,
             decoration: BoxDecoration(
                 color: MyAssetColor.backgroundColor,
@@ -185,8 +184,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
           initialData: false,
           builder: (context, snapshot) {
             bool isShadow = snapshot.data ?? false;
-            return AnimatedContainer(
-              duration: Duration(milliseconds: 200),
+            return Container(
               height: MyConstants.heightAppBar,
               decoration: BoxDecoration(
                   color: isHover ? Colors.white : MyAssetColor.backgroundColor,
@@ -210,7 +208,6 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
   }
 
   void tapPage(int index) {
-    print("index: $index");
     _parentBloc.changePageIndex(index);
   }
 }
