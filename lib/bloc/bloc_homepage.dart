@@ -12,6 +12,10 @@ class BlocHomePage extends BlocBase {
   StreamController<int> _pageStreamController = StreamController.broadcast();
   Stream<int> get pageStream => _pageStreamController.stream;
 
+  bool isShadow = false;
+  StreamController<bool> _appBarShadowController = StreamController();
+  Stream<bool> get appBarShadowStream => _appBarShadowController.stream;
+
   void updateLayoutType(double screenWidth) {
     if (screenWidth > 950) {
       currentType = LayoutType.Web;
@@ -26,6 +30,20 @@ class BlocHomePage extends BlocBase {
     currentType = LayoutType.Phone;
   }
 
+  void updateShadow(List<ItemPosition> itemPositions) {
+    bool isContainZero = false;
+    itemPositions.forEach((itemPosition) {
+      if (itemPosition.index == 0) isContainZero = true;
+    });
+    if (isContainZero && isShadow) {
+      isShadow = false;
+      _appBarShadowController.add(isShadow);
+    } else if (!isContainZero && !isShadow) {
+      isShadow = true;
+      _appBarShadowController.add(isShadow);
+    }
+  }
+
   void changePageIndex(int index, {bool isScroll = true}) {
     currentPage = index;
     if (isScroll) {
@@ -38,6 +56,7 @@ class BlocHomePage extends BlocBase {
   @override
   void dispose() {
     _pageStreamController.close();
+    _appBarShadowController.close();
   }
 }
 
