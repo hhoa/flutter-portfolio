@@ -81,7 +81,7 @@ class _ContactIconState extends State<ContactIcon> {
         },
         child: InkWell(
           onTap: () {
-            html.window.open(widget.linkUrl, 'Download CV');
+            html.window.open(widget.linkUrl, 'Open');
           },
           child: AnimatedOpacity(
             duration: Duration(milliseconds: 200),

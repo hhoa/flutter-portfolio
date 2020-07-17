@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/bloc/bloc_homepage.dart';
@@ -57,11 +58,11 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
   @override
   Widget build(BuildContext context) {
     List<List<String>> listImages = [
-      [MyAssetImages.imageFlashSale,MyConstants.descFlashSale],
-      [MyAssetImages.imageDailyDeal, MyConstants.descDailyDeal],
-      [MyAssetImages.imageLmx, MyConstants.descLmx],
-      [MyAssetImages.imageLuckySale, MyConstants.descLuckySale],
-      [MyAssetImages.imageGos, MyConstants.descGos],
+      [MyAssetImages.imageFlashSale, MyConstants.descFlashSale, MyConstants.linkFlashSale],
+      [MyAssetImages.imageDailyDeal, MyConstants.descDailyDeal, MyConstants.linkDailyDeal],
+      [MyAssetImages.imageLmx, MyConstants.descLmx, MyConstants.linkLmx],
+      [MyAssetImages.imageLuckySale, MyConstants.descLuckySale, MyConstants.linkLuckySale],
+      [MyAssetImages.imageGos, MyConstants.descGos, MyConstants.linkGos],
     ];
 
     double screenHeight = MediaQuery.of(context).size.height;
@@ -85,6 +86,7 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
                   child: ImageDescription(
                     listImages[page][0],
                     description: listImages[page][1],
+                    link: listImages[page][2],
                     isCurrent: currentPage == page,
                   ),
                 );
@@ -99,8 +101,10 @@ class ImageDescription extends StatefulWidget {
   final String image;
   final String description;
   final bool isCurrent;
+  final String link;
 
-  ImageDescription(this.image, {this.description = "", this.isCurrent = false});
+  ImageDescription(this.image,
+      {this.description = "", this.isCurrent = false, this.link = ""});
 
   @override
   _ImageDescriptionState createState() => _ImageDescriptionState();
@@ -119,7 +123,9 @@ class _ImageDescriptionState extends State<ImageDescription> {
       opacity = widget.isCurrent ? 1 : 0.5;
     }
 
-    return BlocHomePage.currentType == LayoutType.Phone ? buildPhone(sigma, opacity) : buildWeb(sigma, opacity);
+    return BlocHomePage.currentType == LayoutType.Phone
+        ? buildPhone(sigma, opacity)
+        : buildWeb(sigma, opacity);
   }
 
   Widget buildPhone(double sigma, double opacity) {
@@ -151,16 +157,33 @@ class _ImageDescriptionState extends State<ImageDescription> {
             ),
             isHover
                 ? Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 300,
-                child: Text(
-                  widget.description,
-                  textAlign: TextAlign.center,
-                  style: MyAssetFonts.descriptionName,
-                ),
-              ),
-            )
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 300,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.description,
+                            textAlign: TextAlign.center,
+                            style: MyAssetFonts.descriptionName,
+                          ),
+                          widget.link.isEmpty
+                              ? Container()
+                              : InkWell(
+                            onTap: () {
+                              html.window.open(widget.link, "Open link");
+                            },
+                            child: Text(
+                              "Open link",
+                              style: MyAssetFonts.descriptionNameLink,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 : Container()
           ],
         ),
@@ -202,16 +225,33 @@ class _ImageDescriptionState extends State<ImageDescription> {
             ),
             isHover
                 ? Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 300,
-                child: Text(
-                  widget.description,
-                  textAlign: TextAlign.center,
-                  style: MyAssetFonts.descriptionName,
-                ),
-              ),
-            )
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 300,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.description,
+                            textAlign: TextAlign.center,
+                            style: MyAssetFonts.descriptionName,
+                          ),
+                          widget.link.isEmpty
+                              ? Container()
+                              : InkWell(
+                                  onTap: () {
+                                    html.window.open(widget.link, "Open link");
+                                  },
+                                  child: Text(
+                                    "Open link",
+                                    style: MyAssetFonts.descriptionNameLink,
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
+                  )
                 : Container()
           ],
         ),

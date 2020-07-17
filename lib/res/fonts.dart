@@ -47,6 +47,13 @@ class MyAssetFonts {
     color: MyAssetColor.descriptionColor,
   );
 
+  static TextStyle descriptionNameLink = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 1 * oneRem,
+    fontFamily: fontFamily,
+    color: Colors.blue,
+  );
+
   static TextStyle companyName = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 1.4 * oneRem,

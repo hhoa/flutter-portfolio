@@ -26,4 +26,14 @@ class MyConstants {
   static String descLmx = "Game 'Lac Mua Xu' running at Sendo";
 
   static String descLuckySale = "Game 'Vong Quay Bay Gia' recently launch at Sendo";
+
+  static String linkDailyDeal = "https://www.sendo.vn/su-kien/deal-soc-moi-ngay";
+
+  static String linkFlashSale = "https://www.sendo.vn/flash-sale/";
+
+  static String linkGos = "https://apps.apple.com/vn/app/game-of-songs-music-games/id1492267122?l=vi";
+
+  static String linkLmx = "http://sendo.onelink.me/dihK/c1fa8733";
+
+  static String linkLuckySale = "https://sendo.onelink.me/Udvq/2f39c673";
 }
