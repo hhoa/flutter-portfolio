@@ -48,9 +48,10 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
     _pageController.addListener(() {
       int page = _pageController.page.toInt() % 5;
       if (page != currentPage) {
-        setState(() {
-          currentPage = page;
-        });
+        if (mounted)
+          setState(() {
+            currentPage = page;
+          });
       }
     });
   }
@@ -58,10 +59,27 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
   @override
   Widget build(BuildContext context) {
     List<List<String>> listImages = [
-      [MyAssetImages.imageFlashSale, MyConstants.descFlashSale, MyConstants.linkFlashSale],
-      [MyAssetImages.imageDailyDeal, MyConstants.descDailyDeal, MyConstants.linkDailyDeal],
+      [
+        MyAssetImages.imageFlashSale,
+        MyConstants.descFlashSale,
+        MyConstants.linkFlashSale
+      ],
+      [
+        MyAssetImages.imageDailyDeal,
+        MyConstants.descDailyDeal,
+        MyConstants.linkDailyDeal
+      ],
       [MyAssetImages.imageLmx, MyConstants.descLmx, MyConstants.linkLmx],
-      [MyAssetImages.imageLuckySale, MyConstants.descLuckySale, MyConstants.linkLuckySale],
+      [
+        MyAssetImages.imageCakeHomescreen,
+        MyConstants.descCake,
+        MyConstants.linkCake
+      ],
+      [
+        MyAssetImages.imageLuckySale,
+        MyConstants.descLuckySale,
+        MyConstants.linkLuckySale
+      ],
       [MyAssetImages.imageGos, MyConstants.descGos, MyConstants.linkGos],
     ];
 
@@ -115,10 +133,10 @@ class _ImageDescriptionState extends State<ImageDescription> {
 
   @override
   Widget build(BuildContext context) {
-    double sigma = isHover ? 2 : 0;
+    double sigma = isHover ? 2 : 0.5;
     double opacity = 1;
     if (isHover) {
-      opacity = 0.5;
+      opacity = 0.15;
     } else {
       opacity = widget.isCurrent ? 1 : 0.5;
     }
@@ -167,20 +185,22 @@ class _ImageDescriptionState extends State<ImageDescription> {
                           Text(
                             widget.description,
                             textAlign: TextAlign.center,
-                            style: MyAssetFonts.descriptionName,
+                            style: MyAssetFonts.descriptionProjects,
                           ),
-                          SizedBox(height: 8,),
+                          SizedBox(
+                            height: 8,
+                          ),
                           widget.link.isEmpty
                               ? Container()
                               : InkWell(
-                            onTap: () {
-                              html.window.open(widget.link, "Open link");
-                            },
-                            child: Text(
-                              "More info",
-                              style: MyAssetFonts.descriptionNameLink,
-                            ),
-                          ),
+                                  onTap: () {
+                                    html.window.open(widget.link, "Open link");
+                                  },
+                                  child: Text(
+                                    "More info",
+                                    style: MyAssetFonts.descriptionNameLink,
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -238,7 +258,9 @@ class _ImageDescriptionState extends State<ImageDescription> {
                             textAlign: TextAlign.center,
                             style: MyAssetFonts.descriptionName,
                           ),
-                          SizedBox(height: 8,),
+                          SizedBox(
+                            height: 8,
+                          ),
                           widget.link.isEmpty
                               ? Container()
                               : InkWell(

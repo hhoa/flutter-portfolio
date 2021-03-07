@@ -34,9 +34,16 @@ class MyTimeLine extends StatelessWidget {
       children: [
         MyTitle("Work Experience"),
         timelineExperience(
-          "05/2019 - Present",
+          "09/2020 - Present",
+          "Be Group",
+          "Be is a Vietnamese tech company which is the CONNECTORS between customers and service providers. At Be Group, I have been building Cake - a digital bank that helps users to quickly create a banking account for some fundamental needs such as transferring money, managing cards or paying bills, etc.",
+          isFirst: false,
+          logo: MyAssetImages.imageBe,
+        ),
+        timelineExperience(
+          "05/2019 - 09/2020",
           "Sendo",
-          "Sendo is one of the leading e-commerce in Vietnam. At sendo I build high quality landing pages such as Flash Sale and Daily Deal to integrate with Buyer app.",
+          "Sendo is one of the leading e-commerce in Vietnam. At sendo, I built high quality landing pages such as Flash Sale and Daily Deal to integrate with Buyer app.",
           isFirst: false,
           logo: MyAssetImages.imageSendo,
         ),

@@ -42,7 +42,7 @@ class MyProfile extends StatelessWidget {
               height: 30,
             ),
             Text(
-              "I'm a passionate Mobile Developer on HCM city",
+              "I'm a passionate Mobile Developer in HCM city",
               style: MyAssetFonts.descriptionName,
             ),
             SizedBox(
@@ -76,7 +76,7 @@ class MyProfile extends StatelessWidget {
 
   Widget _buildImage(double screenHeight) {
     double padding = screenHeight / 8;
-    double sigma = BlocHomePage.currentType == LayoutType.Web ? 0 : 3;
+    double sigma = BlocHomePage.currentType == LayoutType.Web ? 0.1 : 3;
     double opacity = BlocHomePage.currentType == LayoutType.Web ? 1 : 0.4;
 
     return Positioned(

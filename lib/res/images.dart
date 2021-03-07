@@ -1,11 +1,15 @@
 class MyAssetImages {
   static String imageProfile = "assets/images/profile_undraw.png";
 
+  static String imageBe = "assets/images/be_logo.png";
+
   static String imageSendo = "assets/images/sendo_logo.png";
 
   static String imageAioz = "assets/images/aioz_logo.png";
 
   static String imageBosch = "assets/images/bosch_logo.jpeg";
+
+  static String imageCakeHomescreen = "assets/images/cake_home_screen.PNG";
 
   static String imageDailyDeal = "assets/images/dailydeal_screen.jpeg";
 

@@ -153,9 +153,10 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
 
     _parentBloc = BlocProvider.of<BlocHomePage>(context);
     _parentBloc.pageStream.listen((int data) {
-      setState(() {
-        currentPage = data;
-      });
+      if (mounted)
+        setState(() {
+          currentPage = data;
+        });
     });
   }
 
@@ -170,14 +171,16 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
 
     return MouseRegion(
       onEnter: (event) {
-        setState(() {
-          isHover = true;
-        });
+        if (mounted)
+          setState(() {
+            isHover = true;
+          });
       },
       onExit: (event) {
-        setState(() {
-          isHover = false;
-        });
+        if (mounted)
+          setState(() {
+            isHover = false;
+          });
       },
       child: StreamBuilder<bool>(
           stream: _parentBloc.appBarShadowStream,

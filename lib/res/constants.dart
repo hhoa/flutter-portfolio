@@ -3,7 +3,7 @@ class MyConstants {
 
   static String myName = "Hhoa.";
 
-  static String linkCV = "https://drive.google.com/file/d/15fTdQ8NBVIwb3plzLIn4sKlCS0ZRQqwI/view?usp=drivesdk";
+  static String linkCV = "https://drive.google.com/file/d/1aW4LMf1fT0udpMw5wNyAYQmQm3-youCY/view?usp=drivesdk";
 
   static String linkFb = "https://www.facebook.com/hoangkhahoa";
 
@@ -24,6 +24,10 @@ class MyConstants {
   static String descGos = "Game hub based on Songs with various artists and songs";
 
   static String descLmx = "Game 'Lac Mua Xu' running at Sendo";
+
+  static String descCake = "Cake - Digital Banking built with Flutter";
+
+  static String linkCake = "https://cake.vn/";
 
   static String descLuckySale = "Game 'Vong Quay Bay Gia' recently launch at Sendo";
 
