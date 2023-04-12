@@ -40,6 +40,7 @@ linter:
     # - public_member_api_docs
     - comment_references
     - prefer_relative_imports
+    - prefer_typing_uninitialized_variables
     - avoid_init_to_null
     - prefer_interpolation_to_compose_strings
     - unnecessary_lambdas

@@ -24,7 +24,7 @@ Future<void> main() async {
         options: DefaultFirebaseOptions.currentPlatform);
     await FirebaseCrashlytics.instance
         .setCrashlyticsCollectionEnabled(!kDebugMode);
-    await RemoteConfigUtils.instance.initialize();
+    await RemoteConfigUtils.initialize();
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     runApp(const MyApp());
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));

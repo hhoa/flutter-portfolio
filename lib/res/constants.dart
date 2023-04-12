@@ -3,7 +3,7 @@
 class MyConstants {
   MyConstants._();
 
-  static double heightAppBar = 80;
+  static double heightAppBar = 60;
 
   static String myName = "Hhoa.";
 

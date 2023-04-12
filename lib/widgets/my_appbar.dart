@@ -56,31 +56,35 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
         initialData: false,
         builder: (context, snapshot) {
           bool isShadow = snapshot.data ?? false;
-          return Container(
-            height: MyConstants.heightAppBar,
-            decoration: BoxDecoration(
-                color: MyAssetColor.backgroundColor,
-                boxShadow: isShadow
-                    ? [
-                        const BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0, 4),
-                            blurRadius: 4,
-                            spreadRadius: 4)
-                      ]
-                    : null),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(),
-                const SpecialTextName(),
-                IconButton(
-                    icon: Icon(
-                      Icons.menu,
-                      color: MyAssetColor.appColor,
-                    ),
-                    onPressed: openDialog),
-              ],
+          return SafeArea(
+            top: true,
+            bottom: false,
+            child: Container(
+              height: MyConstants.heightAppBar,
+              decoration: BoxDecoration(
+                  color: MyAssetColor.backgroundColor,
+                  boxShadow: isShadow
+                      ? [
+                          const BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(0, 4),
+                              blurRadius: 4,
+                              spreadRadius: 4)
+                        ]
+                      : null),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(width: 48),
+                  const SpecialTextName(),
+                  IconButton(
+                      icon: Icon(
+                        Icons.menu,
+                        color: MyAssetColor.appColor,
+                      ),
+                      onPressed: openDialog),
+                ],
+              ),
             ),
           );
         });

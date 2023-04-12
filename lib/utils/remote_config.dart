@@ -6,22 +6,17 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 
 class RemoteConfigUtils {
-  RemoteConfigUtils._privateConstructor();
+  RemoteConfigUtils._();
 
-  static final RemoteConfigUtils _instance =
-      RemoteConfigUtils._privateConstructor();
+  static final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
 
-  static RemoteConfigUtils get instance => _instance;
+  static String getValueString(String key) => _remoteConfig.getString(key);
 
-  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+  static bool getValueBool(String key) => _remoteConfig.getBool(key);
 
-  String getValueString(String key) => _remoteConfig.getString(key);
+  static int getValueInt(String key) => _remoteConfig.getInt(key);
 
-  bool getValueBool(String key) => _remoteConfig.getBool(key);
-
-  int getValueInt(String key) => _remoteConfig.getInt(key);
-
-  Map<String, dynamic> getValueJson(String key) {
+  static Map<String, dynamic> getValueJson(String key) {
     final jsonString = getValueString(key);
     try {
       return jsonDecode(jsonString);
@@ -32,7 +27,7 @@ class RemoteConfigUtils {
     return {};
   }
 
-  Future<void> initialize() async {
+  static Future<void> initialize() async {
     try {
       await _remoteConfig.setConfigSettings(RemoteConfigSettings(
         fetchTimeout: const Duration(seconds: 10),
@@ -40,13 +35,13 @@ class RemoteConfigUtils {
       ));
       await _remoteConfig.setDefaults({});
       await fetchAndActivate();
-    } on Exception {
+    } on Exception catch (e) {
       // handle error
-      // print(e);
+      print(e);
     }
   }
 
-  Future<void> fetchAndActivate() async {
+  static Future<void> fetchAndActivate() async {
     try {
       await _remoteConfig.ensureInitialized();
       await _remoteConfig.fetchAndActivate();
