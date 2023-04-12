@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/res/colors.dart';
+import 'colors.dart';
 
 class MyAssetFonts {
+  MyAssetFonts._();
+
   static double oneRem = 18;
   static String fontFamily = "ArbutusSlab";
 

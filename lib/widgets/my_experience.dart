@@ -1,36 +1,42 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/res/fonts.dart';
-import 'package:flutter_app_web/res/images.dart';
-import 'package:flutter_app_web/widgets/my_title.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
-import 'package:flutter_app_web/widgets/base_widget.dart';
+import '../res/fonts.dart';
+import '../res/images.dart';
+import 'base_widget.dart';
+import 'my_title.dart';
 
 class MyExperience extends BaseWidget {
+  const MyExperience({Key? key}) : super(key: key);
+
   @override
   Widget buildPhone(BuildContext context) {
-    return MyTimeLine();
+    return const MyTimeLine();
   }
 
   @override
   Widget buildTablet(BuildContext context) {
-    return MyTimeLine();
+    return const MyTimeLine();
   }
 
   @override
   Widget buildWeb(BuildContext context) {
-    return MyTimeLine();
+    return const MyTimeLine();
   }
 }
 
 class MyTimeLine extends StatelessWidget {
+  const MyTimeLine({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
-        MyTitle("Work Experience"),
+        const MyTitle("Work Experience"),
         timelineExperience(
           screenWidth,
           "09/2020 - Present",
@@ -82,7 +88,7 @@ class MyTimeLine extends StatelessWidget {
           height: 40,
           indicator: Container(
             alignment: Alignment.center,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white,
             ),
@@ -110,7 +116,7 @@ class MyTimeLine extends StatelessWidget {
                 time,
                 style: MyAssetFonts.companyTimeline,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 description,
                 style: MyAssetFonts.companyDescription,

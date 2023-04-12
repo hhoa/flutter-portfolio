@@ -1,33 +1,43 @@
 import 'dart:async';
 
-import 'package:flutter_app_web/bloc/bloc_base.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../utils/remote_config.dart';
+import 'bloc_base.dart';
+
 class BlocHomePage extends BlocBase {
-  static LayoutType currentType = LayoutType.Web;
+  BlocHomePage() : remoteConfigUtils = RemoteConfigUtils();
+
+  RemoteConfigUtils remoteConfigUtils;
+
+  static LayoutType currentType = LayoutType.web;
 
   late ItemScrollController itemScrollController;
   int currentPage = 0;
 
-  StreamController<int> _pageStreamController = StreamController.broadcast();
+  final StreamController<int> _pageStreamController =
+      StreamController.broadcast();
+
   Stream<int> get pageStream => _pageStreamController.stream;
 
   bool isShadow = false;
-  StreamController<bool> _appBarShadowController = StreamController.broadcast();
+  final StreamController<bool> _appBarShadowController =
+      StreamController.broadcast();
+
   Stream<bool> get appBarShadowStream => _appBarShadowController.stream;
 
   void updateLayoutType(double screenWidth) {
     if (screenWidth > 950) {
-      currentType = LayoutType.Web;
+      currentType = LayoutType.web;
       return;
     }
 
     if (screenWidth > 600) {
-      currentType = LayoutType.Tablet;
+      currentType = LayoutType.tablet;
       return;
     }
 
-    currentType = LayoutType.Phone;
+    currentType = LayoutType.phone;
   }
 
   void updateShadow(int index) {
@@ -45,7 +55,7 @@ class BlocHomePage extends BlocBase {
     currentPage = index;
     if (isScroll) {
       itemScrollController.scrollTo(
-          index: index, duration: Duration(milliseconds: 300));
+          index: index, duration: const Duration(milliseconds: 300));
     }
     _pageStreamController.add(currentPage);
   }
@@ -58,7 +68,7 @@ class BlocHomePage extends BlocBase {
 }
 
 enum LayoutType {
-  Web,
-  Tablet,
-  Phone,
+  web,
+  tablet,
+  phone,
 }

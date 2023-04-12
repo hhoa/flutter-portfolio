@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/bloc/bloc_homepage.dart';
-import 'package:flutter_app_web/bloc/bloc_provider.dart';
-import 'package:flutter_app_web/res/colors.dart';
-import 'package:flutter_app_web/res/constants.dart';
-import 'package:flutter_app_web/res/fonts.dart';
-import 'package:flutter_app_web/widgets/base_widget.dart';
-import 'package:flutter_app_web/widgets/special_name.dart';
+import '../bloc/bloc_homepage.dart';
+import '../bloc/bloc_provider.dart';
+import '../res/colors.dart';
+import '../res/constants.dart';
+import '../res/fonts.dart';
+import 'base_widget.dart';
+import 'special_name.dart';
 
 List<String> titleAppBar = ["Home", "Work", "Projects", "Contact"];
 
 class MyAppBar extends BaseWidget {
+  const MyAppBar({Key? key}) : super(key: key);
+
   @override
   Widget buildPhone(BuildContext context) {
-    return MyAppBarMobile();
+    return const MyAppBarMobile();
   }
 
   @override
   Widget buildWeb(BuildContext context) {
-    return MyAppBarWeb();
+    return const MyAppBarWeb();
   }
 
   @override
   Widget buildTablet(BuildContext context) {
-    return MyAppBarWeb();
+    return const MyAppBarWeb();
   }
 }
 
 class MyAppBarMobile extends StatefulWidget {
+  const MyAppBarMobile({Key? key}) : super(key: key);
+
   @override
-  _MyAppBarMobileState createState() => _MyAppBarMobileState();
+  State<MyAppBarMobile> createState() => _MyAppBarMobileState();
 }
 
 class _MyAppBarMobileState extends State<MyAppBarMobile> {
@@ -58,7 +62,7 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
                 color: MyAssetColor.backgroundColor,
                 boxShadow: isShadow
                     ? [
-                        BoxShadow(
+                        const BoxShadow(
                             color: Colors.black12,
                             offset: Offset(0, 4),
                             blurRadius: 4,
@@ -69,13 +73,13 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(),
-                SpecialTextName(),
+                const SpecialTextName(),
                 IconButton(
                     icon: Icon(
                       Icons.menu,
                       color: MyAssetColor.appColor,
                     ),
-                    onPressed: () => openDialog()),
+                    onPressed: openDialog),
               ],
             ),
           );
@@ -93,7 +97,7 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
         context: context,
         barrierDismissible: true,
         barrierLabel: "App Bar Dialog",
-        transitionDuration: Duration(milliseconds: 200),
+        transitionDuration: const Duration(milliseconds: 200),
         pageBuilder: (context, anim1, anim2) {
           return GestureDetector(
             onTap: () => Navigator.pop(context),
@@ -105,13 +109,13 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MyConstants.heightAppBar,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(),
-                          SpecialTextName(),
+                          const SpecialTextName(),
                           IconButton(
                             icon:
                                 Icon(Icons.close, color: MyAssetColor.appColor),
@@ -122,7 +126,8 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
                         ],
                       ),
                     ),
-                  ]..addAll(listTextWidgets),
+                    ...listTextWidgets,
+                  ],
                 ),
               ),
             ),
@@ -137,8 +142,10 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
 }
 
 class MyAppBarWeb extends StatefulWidget {
+  const MyAppBarWeb({Key? key}) : super(key: key);
+
   @override
-  _MyAppBarWebState createState() => _MyAppBarWebState();
+  State<MyAppBarWeb> createState() => _MyAppBarWebState();
 }
 
 class _MyAppBarWebState extends State<MyAppBarWeb> {
@@ -153,10 +160,11 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
 
     _parentBloc = BlocProvider.of<BlocHomePage>(context);
     _parentBloc.pageStream.listen((int data) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           currentPage = data;
         });
+      }
     });
   }
 
@@ -167,20 +175,22 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
           onTap: () => tapPage(index), isChosen: index == currentPage);
     }).toList();
 
-    listTextWidgets.insert(titleAppBar.length ~/ 2, SpecialTextName());
+    listTextWidgets.insert(titleAppBar.length ~/ 2, const SpecialTextName());
 
     return MouseRegion(
       onEnter: (event) {
-        if (mounted)
+        if (mounted) {
           setState(() {
             isHover = true;
           });
+        }
       },
       onExit: (event) {
-        if (mounted)
+        if (mounted) {
           setState(() {
             isHover = false;
           });
+        }
       },
       child: StreamBuilder<bool>(
           stream: _parentBloc.appBarShadowStream,
@@ -193,7 +203,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
                   color: isHover ? Colors.white : MyAssetColor.backgroundColor,
                   boxShadow: isShadow
                       ? [
-                          BoxShadow(
+                          const BoxShadow(
                               color: Colors.black12,
                               offset: Offset(0, 4),
                               blurRadius: 4,
@@ -220,7 +230,8 @@ class NormalText extends StatelessWidget {
   final String text;
   final bool isChosen;
 
-  NormalText(this.text, {this.onTap, this.isChosen = false});
+  const NormalText(this.text, {Key? key, this.onTap, this.isChosen = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +240,7 @@ class NormalText extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: AnimatedDefaultTextStyle(
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           style: isChosen
               ? MyAssetFonts.appBarTextSelected
               : MyAssetFonts.appBarTextUnselected,

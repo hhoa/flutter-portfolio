@@ -1,4 +1,8 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 class MyConstants {
+  MyConstants._();
+
   static double heightAppBar = 80;
 
   static String myName = "Hhoa.";

@@ -1,4 +1,6 @@
 class MyAssetImages {
+  MyAssetImages._();
+
   static String imageProfile = "assets/images/profile_undraw.png";
 
   static String imageBe = "assets/images/be_logo.png";

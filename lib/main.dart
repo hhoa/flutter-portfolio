@@ -1,19 +1,24 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/bloc/bloc_homepage.dart';
-import 'package:flutter_app_web/bloc/bloc_provider.dart';
-import 'package:flutter_app_web/res/colors.dart';
-import 'package:flutter_app_web/widgets/my_appbar.dart';
-import 'package:flutter_app_web/widgets/my_contact.dart';
-import 'package:flutter_app_web/widgets/my_experience.dart';
-import 'package:flutter_app_web/widgets/my_profile.dart';
-import 'package:flutter_app_web/widgets/my_projects.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-void main() {
-  runApp(MyApp());
+import 'bloc/bloc_homepage.dart';
+import 'bloc/bloc_provider.dart';
+import 'res/colors.dart';
+import 'widgets/my_appbar.dart';
+import 'widgets/my_contact.dart';
+import 'widgets/my_experience.dart';
+import 'widgets/my_profile.dart';
+import 'widgets/my_projects.dart';
+
+Future<void> main() async {
+  await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,17 +29,17 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider<BlocHomePage>(
         bloc: BlocHomePage(),
-        child: MyHomePage(),
+        child: const MyHomePage(),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -69,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: MyAssetColor.backgroundColor,
             body: Column(
               children: [
-                MyAppBar(),
+                const MyAppBar(),
                 Expanded(child: _buildPageView()),
               ],
             ));
@@ -87,13 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
       itemBuilder: (context, index) {
         switch (index) {
           case 0:
-            return MyProfile();
+            return const MyProfile();
           case 1:
-            return MyExperience();
+            return const MyExperience();
           case 2:
-            return MyProjects();
+            return const MyProjects();
           case 3:
-            return MyContact();
+            return const MyContact();
           default:
             return Container();
         }

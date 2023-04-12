@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/res/constants.dart';
-import 'package:flutter_app_web/res/fonts.dart';
+import '../res/constants.dart';
+import '../res/fonts.dart';
 
 class MyTitle extends StatelessWidget {
   final String text;
 
-  MyTitle(this.text);
+  const MyTitle(this.text, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

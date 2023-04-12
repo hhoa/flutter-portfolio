@@ -1,16 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/bloc/bloc_homepage.dart';
-import 'package:flutter_app_web/res/constants.dart';
-import 'package:flutter_app_web/res/fonts.dart';
-import 'package:flutter_app_web/res/images.dart';
-import 'package:flutter_app_web/widgets/base_widget.dart';
-import 'package:flutter_app_web/widgets/my_title.dart';
 
+import '../bloc/bloc_homepage.dart';
+import '../res/constants.dart';
+import '../res/fonts.dart';
+import '../res/images.dart';
 import '../utils/common.dart';
+import 'base_widget.dart';
+import 'my_title.dart';
 
 class MyProjects extends BaseWidget {
+  const MyProjects({Key? key}) : super(key: key);
+
   @override
   Widget buildPhone(BuildContext context) {
     return MyPageViewProjects(0.8);
@@ -33,7 +35,7 @@ class MyPageViewProjects extends StatefulWidget {
   final double viewPort;
 
   @override
-  _MyPageViewProjectsState createState() => _MyPageViewProjectsState();
+  State<MyPageViewProjects> createState() => _MyPageViewProjectsState();
 }
 
 class _MyPageViewProjectsState extends State<MyPageViewProjects> {
@@ -49,10 +51,11 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
     _pageController.addListener(() {
       int page = _pageController.page!.toInt() % 5;
       if (page != currentPage) {
-        if (mounted)
+        if (mounted) {
           setState(() {
             currentPage = page;
           });
+        }
       }
     });
   }
@@ -89,7 +92,7 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
 
     return Column(
       children: [
-        MyTitle("Recent Projects"),
+        const MyTitle("Recent Projects"),
         Container(
           height: screenHeight / 1.4,
           width: screenWidth,
@@ -99,7 +102,7 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
               itemBuilder: (context, index) {
                 int page = index % 5;
 
-                return Container(
+                return SizedBox(
                   width: screenWidth / 2,
                   height: screenHeight / 1.4,
                   child: ImageDescription(
@@ -122,11 +125,12 @@ class ImageDescription extends StatefulWidget {
   final bool isCurrent;
   final String link;
 
-  ImageDescription(this.image,
-      {this.description = "", this.isCurrent = false, this.link = ""});
+  const ImageDescription(this.image,
+      {Key? key, this.description = "", this.isCurrent = false, this.link = ""})
+      : super(key: key);
 
   @override
-  _ImageDescriptionState createState() => _ImageDescriptionState();
+  State<ImageDescription> createState() => _ImageDescriptionState();
 }
 
 class _ImageDescriptionState extends State<ImageDescription> {
@@ -142,7 +146,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
       opacity = widget.isCurrent ? 1 : 0.5;
     }
 
-    return BlocHomePage.currentType == LayoutType.Phone
+    return BlocHomePage.currentType == LayoutType.phone
         ? buildPhone(sigma, opacity)
         : buildWeb(sigma, opacity);
   }
@@ -160,7 +164,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
           fit: StackFit.expand,
           children: [
             AnimatedOpacity(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               opacity: opacity,
               child: Image.asset(
                 widget.image,
@@ -177,7 +181,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
             isHover
                 ? Align(
                     alignment: Alignment.center,
-                    child: Container(
+                    child: SizedBox(
                       width: 250,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +192,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                             textAlign: TextAlign.center,
                             style: MyAssetFonts.descriptionProjects,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           widget.link.isEmpty
@@ -231,7 +235,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
           fit: StackFit.expand,
           children: [
             AnimatedOpacity(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               opacity: opacity,
               child: Image.asset(
                 widget.image,
@@ -248,7 +252,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
             isHover
                 ? Align(
                     alignment: Alignment.center,
-                    child: Container(
+                    child: SizedBox(
                       width: 250,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -259,7 +263,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                             textAlign: TextAlign.center,
                             style: MyAssetFonts.descriptionName,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           widget.link.isEmpty

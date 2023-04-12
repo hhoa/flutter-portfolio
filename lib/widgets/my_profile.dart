@@ -1,21 +1,23 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/bloc/bloc_homepage.dart';
-import 'package:flutter_app_web/res/colors.dart';
-import 'package:flutter_app_web/res/fonts.dart';
-import 'package:flutter_app_web/res/images.dart';
-import 'package:flutter_app_web/res/constants.dart';
 
+import '../bloc/bloc_homepage.dart';
+import '../res/colors.dart';
+import '../res/constants.dart';
+import '../res/fonts.dart';
+import '../res/images.dart';
 import '../utils/common.dart';
 
 class MyProfile extends StatelessWidget {
+  const MyProfile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
+    return SizedBox(
       height: screenHeight - MyConstants.heightAppBar,
       child: Stack(
         children: [
@@ -39,16 +41,12 @@ class MyProfile extends StatelessWidget {
               "I'm Hoa Hoang",
               style: MyAssetFonts.bigBoldName,
             ),
-            SizedBox(
-              height: 30
-            ),
+            const SizedBox(height: 30),
             Text(
               "I'm a passionate Mobile Developer in HCMC",
               style: MyAssetFonts.descriptionName,
             ),
-            SizedBox(
-              height: 30
-            ),
+            const SizedBox(height: 30),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyAssetColor.appColor,
@@ -79,8 +77,8 @@ class MyProfile extends StatelessWidget {
 
   Widget _buildImage(double screenHeight) {
     double padding = screenHeight / 8;
-    double sigma = BlocHomePage.currentType == LayoutType.Web ? 0.1 : 3;
-    double opacity = BlocHomePage.currentType == LayoutType.Web ? 1 : 0.4;
+    double sigma = BlocHomePage.currentType == LayoutType.web ? 0.1 : 3;
+    double opacity = BlocHomePage.currentType == LayoutType.web ? 1 : 0.4;
 
     return Positioned(
       right: 0,
@@ -90,7 +88,7 @@ class MyProfile extends StatelessWidget {
         children: [
           Opacity(
             opacity: opacity,
-            child: Container(
+            child: SizedBox(
               height: screenHeight,
               child: Image.asset(
                 MyAssetImages.imageProfile,

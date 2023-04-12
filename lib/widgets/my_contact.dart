@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/res/constants.dart';
 
-import 'package:flutter_app_web/res/fonts.dart';
-import 'package:flutter_app_web/res/images.dart';
-import 'package:flutter_app_web/utils/common.dart';
-import 'package:flutter_app_web/widgets/special_name.dart';
+import '../res/constants.dart';
+import '../res/fonts.dart';
+import '../res/images.dart';
+import '../utils/common.dart';
+import 'special_name.dart';
 
 class MyContact extends StatelessWidget {
+  const MyContact({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
       height: screenHeight / 3,
@@ -20,10 +19,14 @@ class MyContact extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SpecialTextName(),
-          SizedBox(height: 20,),
+          const SpecialTextName(),
+          const SizedBox(
+            height: 20,
+          ),
           buildTextFollow(),
-          SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           buildIcons(),
         ],
       ),
@@ -55,10 +58,10 @@ class ContactIcon extends StatefulWidget {
   final String image;
   final String linkUrl;
 
-  ContactIcon(this.image, this.linkUrl);
+  const ContactIcon(this.image, this.linkUrl, {Key? key}) : super(key: key);
 
   @override
-  _ContactIconState createState() => _ContactIconState();
+  State<ContactIcon> createState() => _ContactIconState();
 }
 
 class _ContactIconState extends State<ContactIcon> {
@@ -84,10 +87,13 @@ class _ContactIconState extends State<ContactIcon> {
             Common.launch(widget.linkUrl);
           },
           child: AnimatedOpacity(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             opacity: isHover ? 1 : 0.3,
             child: Image.asset(
-              widget.image, width: MyAssetFonts.oneRem, height: MyAssetFonts.oneRem,),
+              widget.image,
+              width: MyAssetFonts.oneRem,
+              height: MyAssetFonts.oneRem,
+            ),
           ),
         ),
       ),

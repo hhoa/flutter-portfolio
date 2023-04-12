@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_web/res/constants.dart';
-import 'package:flutter_app_web/res/fonts.dart';
+import '../res/constants.dart';
+import '../res/fonts.dart';
 
 class SpecialTextName extends StatelessWidget {
+  const SpecialTextName({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

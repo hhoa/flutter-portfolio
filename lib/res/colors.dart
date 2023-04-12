@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MyAssetColor {
-  static Color appColor = Color(0xff207561);
+  MyAssetColor._();
 
-  static Color backgroundColor = Color(0xffF6F7F9);
+  static Color appColor = const Color(0xff207561);
 
-  static Color descriptionColor = Color(0xff1a1a1a);
+  static Color backgroundColor = const Color(0xffF6F7F9);
 
-  static Color bottomColor = Color(0xfff7f7fd);
+  static Color descriptionColor = const Color(0xff1a1a1a);
+
+  static Color bottomColor = const Color(0xfff7f7fd);
 }
