@@ -1,9 +1,9 @@
-import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/res/constants.dart';
 
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
+import 'package:flutter_app_web/utils/common.dart';
 import 'package:flutter_app_web/widgets/special_name.dart';
 
 class MyContact extends StatelessWidget {
@@ -81,7 +81,7 @@ class _ContactIconState extends State<ContactIcon> {
         },
         child: InkWell(
           onTap: () {
-            html.window.open(widget.linkUrl, 'Open');
+            Common.launch(widget.linkUrl);
           },
           child: AnimatedOpacity(
             duration: Duration(milliseconds: 200),

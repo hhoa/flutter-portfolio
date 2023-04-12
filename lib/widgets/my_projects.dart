@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/bloc/bloc_homepage.dart';
@@ -8,6 +7,8 @@ import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
 import 'package:flutter_app_web/widgets/base_widget.dart';
 import 'package:flutter_app_web/widgets/my_title.dart';
+
+import '../utils/common.dart';
 
 class MyProjects extends BaseWidget {
   @override
@@ -36,7 +37,7 @@ class MyPageViewProjects extends StatefulWidget {
 }
 
 class _MyPageViewProjectsState extends State<MyPageViewProjects> {
-  PageController _pageController;
+  late PageController _pageController;
   int currentPage = 3;
 
   @override
@@ -46,7 +47,7 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
     _pageController = PageController(
         initialPage: currentPage, viewportFraction: widget.viewPort);
     _pageController.addListener(() {
-      int page = _pageController.page.toInt() % 5;
+      int page = _pageController.page!.toInt() % 5;
       if (page != currentPage) {
         if (mounted)
           setState(() {
@@ -194,7 +195,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                               ? Container()
                               : InkWell(
                                   onTap: () {
-                                    html.window.open(widget.link, "Open link");
+                                    Common.launch(widget.link);
                                   },
                                   child: Text(
                                     "More info",
@@ -265,7 +266,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
                               ? Container()
                               : InkWell(
                                   onTap: () {
-                                    html.window.open(widget.link, "Open link");
+                                    Common.launch(widget.link);
                                   },
                                   child: Text(
                                     "More info",

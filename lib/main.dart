@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BlocProvider(
+      home: BlocProvider<BlocHomePage>(
         bloc: BlocHomePage(),
         child: MyHomePage(),
       ),
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -39,8 +39,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
-  BlocHomePage _bloc;
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
+  late BlocHomePage _bloc;
 
   @override
   void initState() {
@@ -49,9 +50,11 @@ class _MyHomePageState extends State<MyHomePage> {
     _bloc = BlocProvider.of<BlocHomePage>(context);
     _bloc.itemScrollController = itemScrollController;
     itemPositionsListener.itemPositions.addListener(() {
-      List<ItemPosition> itemPositions = itemPositionsListener.itemPositions.value.toList();
+      List<ItemPosition> itemPositions =
+          itemPositionsListener.itemPositions.value.toList();
       _bloc.updateShadow(itemPositions[0].index);
-      if (!itemPositions.contains(_bloc.currentPage) && itemPositions[0].index != _bloc.currentPage) {
+      if (!itemPositions.contains(_bloc.currentPage) &&
+          itemPositions[0].index != _bloc.currentPage) {
         _bloc.changePageIndex(itemPositions[0].index, isScroll: false);
       }
     });
@@ -67,37 +70,40 @@ class _MyHomePageState extends State<MyHomePage> {
             body: Column(
               children: [
                 MyAppBar(),
-                _buildPageView(),
+                Expanded(child: _buildPageView()),
               ],
-            )
-        );
+            ));
       },
     );
   }
 
   Widget _buildPageView() {
-    return Expanded(
-      child: ScrollablePositionedList.builder(
-        itemCount: 4,
-        scrollDirection: Axis.vertical,
-        physics: const ClampingScrollPhysics(),
-        itemScrollController: itemScrollController,
-        itemPositionsListener: itemPositionsListener,
-        itemBuilder: (context, index) {
-          switch (index) {
-            case 0:
-              return MyProfile();
-            case 1:
-              return MyExperience();
-            case 2:
-              return MyProjects();
-            case 3:
-              return MyContact();
-            default:
-              return Container();
-          }
-        },
-      ),
+    return ScrollablePositionedList.builder(
+      itemCount: 4,
+      scrollDirection: Axis.vertical,
+      physics: const ClampingScrollPhysics(),
+      itemScrollController: itemScrollController,
+      itemPositionsListener: itemPositionsListener,
+      itemBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return MyProfile();
+          case 1:
+            return MyExperience();
+          case 2:
+            return MyProjects();
+          case 3:
+            return MyContact();
+          default:
+            return Container();
+        }
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
   }
 }

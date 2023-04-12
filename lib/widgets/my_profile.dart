@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_web/bloc/bloc_homepage.dart';
@@ -7,6 +6,8 @@ import 'package:flutter_app_web/res/colors.dart';
 import 'package:flutter_app_web/res/fonts.dart';
 import 'package:flutter_app_web/res/images.dart';
 import 'package:flutter_app_web/res/constants.dart';
+
+import '../utils/common.dart';
 
 class MyProfile extends StatelessWidget {
   @override
@@ -39,22 +40,23 @@ class MyProfile extends StatelessWidget {
               style: MyAssetFonts.bigBoldName,
             ),
             SizedBox(
-              height: 30,
+              height: 30
             ),
             Text(
-              "I'm a passionate Mobile Developer in HCM city",
+              "I'm a passionate Mobile Developer in HCMC",
               style: MyAssetFonts.descriptionName,
             ),
             SizedBox(
-              height: 30,
+              height: 30
             ),
-            RaisedButton(
-              hoverColor: Colors.black,
-              color: MyAssetColor.appColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: MyAssetColor.appColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+              ),
               onPressed: () {
-                html.window.open(MyConstants.linkCV, 'Download CV');
+                Common.launch(MyConstants.linkCV);
               },
               child: Container(
                 padding:
@@ -62,9 +64,10 @@ class MyProfile extends StatelessWidget {
                 child: Text(
                   "Download CV",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: MyAssetFonts.fontFamily,
-                      fontSize: 16),
+                    color: Colors.white,
+                    fontFamily: MyAssetFonts.fontFamily,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),

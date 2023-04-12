@@ -24,16 +24,15 @@ class MyExperience extends BaseWidget {
 }
 
 class MyTimeLine extends StatelessWidget {
-  double screenWidth;
-
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
+    final double screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
         MyTitle("Work Experience"),
         timelineExperience(
+          screenWidth,
           "09/2020 - Present",
           "Be Group",
           "Be is a Vietnamese tech company which is the CONNECTORS between customers and service providers. At Be Group, I have been building Cake - a digital bank that helps users to quickly create a banking account for some fundamental needs such as transferring money, managing cards or paying bills, etc.",
@@ -41,6 +40,7 @@ class MyTimeLine extends StatelessWidget {
           logo: MyAssetImages.imageBe,
         ),
         timelineExperience(
+          screenWidth,
           "05/2019 - 09/2020",
           "Sendo",
           "Sendo is one of the leading e-commerce in Vietnam. At sendo, I built high quality landing pages such as Flash Sale and Daily Deal to integrate with Buyer app.",
@@ -48,12 +48,14 @@ class MyTimeLine extends StatelessWidget {
           logo: MyAssetImages.imageSendo,
         ),
         timelineExperience(
+          screenWidth,
           "01/2018 - 05/2019",
           "AIOZ",
           "AIOZ is a Singapore-based company. At AIOZ, I built mobile app that integrating cutting-edge technology like Computer Vision and Machine Learning to help resolve problems.",
           logo: MyAssetImages.imageAioz,
         ),
         timelineExperience(
+          screenWidth,
           "07/2017 - 12/2017",
           "Robert BOSCH Vietnam",
           "The Bosch Group is a leading global supplier of technology and services. At Bosch, I worked with German customer to build software tool that log their work.",
@@ -64,14 +66,15 @@ class MyTimeLine extends StatelessWidget {
     );
   }
 
-  Widget timelineExperience(String time, String exp, String description,
+  Widget timelineExperience(
+      double screenWidth, String time, String exp, String description,
       {bool isFirst = false, bool isLast = false, String logo = ""}) {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(horizontal: screenWidth / 8),
       child: TimelineTile(
-        alignment: TimelineAlign.left,
-        lineX: 0,
+        alignment: TimelineAlign.start,
+        lineXY: 0,
         isFirst: isFirst,
         isLast: isLast,
         indicatorStyle: IndicatorStyle(
@@ -92,7 +95,7 @@ class MyTimeLine extends StatelessWidget {
             ),
           ),
         ),
-        rightChild: Container(
+        endChild: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           alignment: Alignment.center,
           child: Column(

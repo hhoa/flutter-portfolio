@@ -6,7 +6,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class BlocHomePage extends BlocBase {
   static LayoutType currentType = LayoutType.Web;
 
-  ItemScrollController itemScrollController;
+  late ItemScrollController itemScrollController;
   int currentPage = 0;
 
   StreamController<int> _pageStreamController = StreamController.broadcast();

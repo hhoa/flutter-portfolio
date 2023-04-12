@@ -32,7 +32,7 @@ class MyAppBarMobile extends StatefulWidget {
 }
 
 class _MyAppBarMobileState extends State<MyAppBarMobile> {
-  BlocHomePage _parentBloc;
+  late BlocHomePage _parentBloc;
   int currentPage = 0;
 
   @override
@@ -142,7 +142,7 @@ class MyAppBarWeb extends StatefulWidget {
 }
 
 class _MyAppBarWebState extends State<MyAppBarWeb> {
-  BlocHomePage _parentBloc;
+  late BlocHomePage _parentBloc;
   bool isHover = false;
   int currentPage = 0;
   List<Widget> listTextWidgets = [];
@@ -216,7 +216,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
 }
 
 class NormalText extends StatelessWidget {
-  final Function onTap;
+  final VoidCallback? onTap;
   final String text;
   final bool isChosen;
 
@@ -227,7 +227,7 @@ class NormalText extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: InkWell(
-        onTap: onTap ?? () {},
+        onTap: onTap,
         child: AnimatedDefaultTextStyle(
           duration: Duration(milliseconds: 200),
           style: isChosen
