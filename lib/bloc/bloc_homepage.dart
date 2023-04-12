@@ -2,14 +2,9 @@ import 'dart:async';
 
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../utils/remote_config.dart';
 import 'bloc_base.dart';
 
 class BlocHomePage extends BlocBase {
-  BlocHomePage() : remoteConfigUtils = RemoteConfigUtils();
-
-  RemoteConfigUtils remoteConfigUtils;
-
   static LayoutType currentType = LayoutType.web;
 
   late ItemScrollController itemScrollController;

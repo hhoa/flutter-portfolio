@@ -28,6 +28,9 @@ dependencies:
   timeline_tile: ^2.0.0
   scrollable_positioned_list: 0.3.5
   url_launcher: ^6.1.10
+  firebase_core: ^2.9.0
+  firebase_remote_config: ^4.0.0
+  firebase_crashlytics: ^3.1.0
 
 dev_dependencies:
   flutter_test:

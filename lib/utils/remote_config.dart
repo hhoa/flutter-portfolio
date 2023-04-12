@@ -6,6 +6,13 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 
 class RemoteConfigUtils {
+  RemoteConfigUtils._privateConstructor();
+
+  static final RemoteConfigUtils _instance =
+      RemoteConfigUtils._privateConstructor();
+
+  static RemoteConfigUtils get instance => _instance;
+
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
 
   String getValueString(String key) => _remoteConfig.getString(key);
@@ -27,14 +34,11 @@ class RemoteConfigUtils {
 
   Future<void> initialize() async {
     try {
-      // Durations should be configure-able via env vars later
       await _remoteConfig.setConfigSettings(RemoteConfigSettings(
         fetchTimeout: const Duration(seconds: 10),
         minimumFetchInterval: const Duration(seconds: 60),
       ));
-      await _remoteConfig.setDefaults({
-
-      });
+      await _remoteConfig.setDefaults({});
       await fetchAndActivate();
     } on Exception {
       // handle error

@@ -1,10 +1,16 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'bloc/bloc_homepage.dart';
 import 'bloc/bloc_provider.dart';
+import 'firebase_options.dart';
 import 'res/colors.dart';
+import 'utils/remote_config.dart';
 import 'widgets/my_appbar.dart';
 import 'widgets/my_contact.dart';
 import 'widgets/my_experience.dart';
@@ -12,8 +18,16 @@ import 'widgets/my_profile.dart';
 import 'widgets/my_projects.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp();
-  runApp(const MyApp());
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    await FirebaseCrashlytics.instance
+        .setCrashlyticsCollectionEnabled(!kDebugMode);
+    await RemoteConfigUtils.instance.initialize();
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    runApp(const MyApp());
+  }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 
 class MyApp extends StatelessWidget {
@@ -58,7 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
       List<ItemPosition> itemPositions =
           itemPositionsListener.itemPositions.value.toList();
       _bloc.updateShadow(itemPositions[0].index);
-      if (!itemPositions.contains(_bloc.currentPage) &&
+      if (!itemPositions
+              .map((e) => e.index)
+              .toList()
+              .contains(_bloc.currentPage) &&
           itemPositions[0].index != _bloc.currentPage) {
         _bloc.changePageIndex(itemPositions[0].index, isScroll: false);
       }

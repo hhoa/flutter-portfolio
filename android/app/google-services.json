@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "675752247060",
+    "firebase_url": "https://flutter-portfolio-e116e.firebaseio.com",
+    "project_id": "flutter-portfolio-e116e",
+    "storage_bucket": "flutter-portfolio-e116e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675752247060:android:4636b3367fcaaecefc4c01",
+        "android_client_info": {
+          "package_name": "com.hhoa.flutter_app_web"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675752247060-jffpredu9ua6591vhhfn8a09u1do1e8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS_rIY0r0_SzELhhbLYe5BHHgJcMS0lZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675752247060-jffpredu9ua6591vhhfn8a09u1do1e8o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "675752247060-np70a3ru643hdb82ehs5b3577ls0squu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hhoa.flutterAppWeb"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
