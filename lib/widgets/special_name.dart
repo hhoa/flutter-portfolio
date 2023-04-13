@@ -9,7 +9,7 @@ class SpecialTextName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String myName =
-        RemoteConfigUtils.getValueString(RemoteConfigEnum.myName.key);
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.myNameText.key);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),

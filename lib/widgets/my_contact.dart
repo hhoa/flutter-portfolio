@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../res/constants.dart';
+import '../enum/remote_config.dart';
+import '../model/contact_model.dart';
 import '../res/fonts.dart';
-import '../res/images.dart';
 import '../utils/common.dart';
+import '../utils/remote_config.dart';
 import 'special_name.dart';
 
 class MyContact extends StatelessWidget {
-  const MyContact({Key? key}) : super(key: key);
+  MyContact({Key? key}) : super(key: key) {
+    listContacts = contactModelFromJson(
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.followMe.key));
+  }
+
+  late final List<ContactModel> listContacts;
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+    final double screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
       height: screenHeight / 3,
@@ -20,13 +26,9 @@ class MyContact extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SpecialTextName(),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           buildTextFollow(),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           buildIcons(),
         ],
       ),
@@ -34,22 +36,33 @@ class MyContact extends StatelessWidget {
   }
 
   Widget buildTextFollow() {
+    final followMeTitle =
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.followMeText.key);
     return Text(
-      "FOLLOW ME",
+      followMeTitle,
       style: MyAssetFonts.followText,
     );
   }
 
   Widget buildIcons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ContactIcon(MyAssetImages.imageFacebook, MyConstants.linkFb),
-        ContactIcon(MyAssetImages.imageSkype, MyConstants.linkSkype),
-        ContactIcon(MyAssetImages.imageLinkedin, MyConstants.linkLinkedin),
-        ContactIcon(MyAssetImages.imageGithub, MyConstants.linkGithub),
-      ],
+    return Container(
+      height: MyAssetFonts.oneRem,
+      alignment: Alignment.center,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const ClampingScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (_, int index) {
+          final ContactModel model = listContacts[index];
+          if (model.isNull) {
+            return Container();
+          }
+          return ContactIcon(model.icon!, model.link!);
+        },
+        separatorBuilder: (_, int index) => SizedBox(
+            width: listContacts[index].isNull ? 0 : MyAssetFonts.oneRem * 2),
+        itemCount: listContacts.length,
+      ),
     );
   }
 }
@@ -69,31 +82,28 @@ class _ContactIconState extends State<ContactIcon> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: MouseRegion(
-        onEnter: (_) {
-          setState(() {
-            isHover = true;
-          });
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          isHover = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          isHover = false;
+        });
+      },
+      child: InkWell(
+        onTap: () {
+          Common.launch(widget.linkUrl);
         },
-        onExit: (_) {
-          setState(() {
-            isHover = false;
-          });
-        },
-        child: InkWell(
-          onTap: () {
-            Common.launch(widget.linkUrl);
-          },
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
-            opacity: isHover ? 1 : 0.3,
-            child: Image.asset(
-              widget.image,
-              width: MyAssetFonts.oneRem,
-              height: MyAssetFonts.oneRem,
-            ),
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 200),
+          opacity: isHover ? 1 : 0.3,
+          child: Image.network(
+            widget.image,
+            width: MyAssetFonts.oneRem,
+            height: MyAssetFonts.oneRem,
           ),
         ),
       ),

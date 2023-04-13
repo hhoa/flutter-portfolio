@@ -55,7 +55,7 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
         stream: _parentBloc.appBarShadowStream,
         initialData: false,
         builder: (context, snapshot) {
-          bool isShadow = snapshot.data ?? false;
+          final bool isShadow = snapshot.data ?? false;
           return SafeArea(
             top: true,
             bottom: false,
@@ -66,10 +66,10 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
                   boxShadow: isShadow
                       ? [
                           const BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0, 4),
-                              blurRadius: 4,
-                              spreadRadius: 4)
+                            color: Colors.black12,
+                            offset: Offset(0, 4),
+                            blurRadius: 4,
+                          )
                         ]
                       : null),
               child: Row(
@@ -91,7 +91,7 @@ class _MyAppBarMobileState extends State<MyAppBarMobile> {
   }
 
   void openDialog() {
-    List<Widget> listTextWidgets = List.generate(
+    final List<Widget> listTextWidgets = List.generate(
         titleAppBar.length,
         (index) => NormalText(titleAppBar[index],
             onTap: () => tapPage(index),
@@ -200,7 +200,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
           stream: _parentBloc.appBarShadowStream,
           initialData: false,
           builder: (context, snapshot) {
-            bool isShadow = snapshot.data ?? false;
+            final bool isShadow = snapshot.data ?? false;
             return Container(
               height: MyConstants.heightAppBar,
               decoration: BoxDecoration(

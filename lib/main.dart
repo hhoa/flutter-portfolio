@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _bloc = BlocProvider.of<BlocHomePage>(context);
     _bloc.itemScrollController = itemScrollController;
     itemPositionsListener.itemPositions.addListener(() {
-      List<ItemPosition> itemPositions =
+      final List<ItemPosition> itemPositions =
           itemPositionsListener.itemPositions.value.toList();
       _bloc.updateShadow(itemPositions[0].index);
       if (!itemPositions
@@ -115,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           case 2:
             return const MyProjects();
           case 3:
-            return const MyContact();
+            return MyContact();
           default:
             return Container();
         }

@@ -3,19 +3,21 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../bloc/bloc_homepage.dart';
+import '../enum/remote_config.dart';
 import '../res/colors.dart';
 import '../res/constants.dart';
 import '../res/fonts.dart';
 import '../res/images.dart';
 import '../utils/common.dart';
+import '../utils/remote_config.dart';
 
 class MyProfile extends StatelessWidget {
   const MyProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
       height: screenHeight - MyConstants.heightAppBar,
@@ -29,6 +31,13 @@ class MyProfile extends StatelessWidget {
   }
 
   Widget _buildText(double screenWidth) {
+    final nameTitle =
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.nameTitleText.key);
+    final introductionTitle = RemoteConfigUtils.getValueString(
+        RemoteConfigEnum.myselfIntroductionText.key);
+    final downloadCvTitle =
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.downloadCvText.key);
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -38,12 +47,12 @@ class MyProfile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "I'm Hoa Hoang",
+              nameTitle,
               style: MyAssetFonts.bigBoldName,
             ),
             const SizedBox(height: 30),
             Text(
-              "I'm a passionate Mobile Developer in HCMC",
+              introductionTitle,
               style: MyAssetFonts.descriptionName,
             ),
             const SizedBox(height: 30),
@@ -54,13 +63,16 @@ class MyProfile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20)),
               ),
               onPressed: () {
-                Common.launch(MyConstants.linkCV);
+                final String link = RemoteConfigUtils.getValueString(
+                    RemoteConfigEnum.linkCV.key);
+
+                Common.launch(link);
               },
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
-                  "Download CV",
+                  downloadCvTitle,
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: MyAssetFonts.fontFamily,
@@ -76,9 +88,9 @@ class MyProfile extends StatelessWidget {
   }
 
   Widget _buildImage(double screenHeight) {
-    double padding = screenHeight / 8;
-    double sigma = BlocHomePage.currentType == LayoutType.web ? 0.1 : 3;
-    double opacity = BlocHomePage.currentType == LayoutType.web ? 1 : 0.4;
+    final double padding = screenHeight / 8;
+    final double sigma = BlocHomePage.currentType == LayoutType.web ? 0.1 : 3;
+    final double opacity = BlocHomePage.currentType == LayoutType.web ? 1 : 0.4;
 
     return Positioned(
       right: 0,

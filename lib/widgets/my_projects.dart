@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../bloc/bloc_homepage.dart';
-import '../res/constants.dart';
+import '../enum/remote_config.dart';
+import '../model/project_model.dart';
 import '../res/fonts.dart';
-import '../res/images.dart';
 import '../utils/common.dart';
+import '../utils/remote_config.dart';
 import 'base_widget.dart';
 import 'my_title.dart';
 
@@ -40,16 +41,22 @@ class MyPageViewProjects extends StatefulWidget {
 
 class _MyPageViewProjectsState extends State<MyPageViewProjects> {
   late PageController _pageController;
-  int currentPage = 3;
+  late final List<ProjectModel> projects;
+  int currentPage = 0;
+
+  int get projectLength => projects.length;
 
   @override
   void initState() {
     super.initState();
 
+    projects = projectModelFromJson(
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.project.key));
+    currentPage = (projectLength / 2).round();
     _pageController = PageController(
         initialPage: currentPage, viewportFraction: widget.viewPort);
     _pageController.addListener(() {
-      int page = _pageController.page!.toInt() % 5;
+      final int page = _pageController.page!.toInt() % (projectLength - 1);
       if (page != currentPage) {
         if (mounted) {
           setState(() {
@@ -62,37 +69,14 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
 
   @override
   Widget build(BuildContext context) {
-    List<List<String>> listImages = [
-      [
-        MyAssetImages.imageFlashSale,
-        MyConstants.descFlashSale,
-        MyConstants.linkFlashSale
-      ],
-      [
-        MyAssetImages.imageDailyDeal,
-        MyConstants.descDailyDeal,
-        MyConstants.linkDailyDeal
-      ],
-      [MyAssetImages.imageLmx, MyConstants.descLmx, MyConstants.linkLmx],
-      [
-        MyAssetImages.imageCakeHomescreen,
-        MyConstants.descCake,
-        MyConstants.linkCake
-      ],
-      [
-        MyAssetImages.imageLuckySale,
-        MyConstants.descLuckySale,
-        MyConstants.linkLuckySale
-      ],
-      [MyAssetImages.imageGos, MyConstants.descGos, MyConstants.linkGos],
-    ];
-
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final String recentProjectsTitle = RemoteConfigUtils.getValueString(
+        RemoteConfigEnum.recentProjectsText.key);
 
     return Column(
       children: [
-        const MyTitle("Recent Projects"),
+        MyTitle(recentProjectsTitle),
         Container(
           height: screenHeight / 1.4,
           width: screenWidth,
@@ -100,15 +84,16 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
           child: PageView.builder(
               controller: _pageController,
               itemBuilder: (context, index) {
-                int page = index % 5;
+                final int page = index % (projectLength - 1);
+                final ProjectModel model = projects[page];
 
                 return SizedBox(
                   width: screenWidth / 2,
                   height: screenHeight / 1.4,
                   child: ImageDescription(
-                    listImages[page][0],
-                    description: listImages[page][1],
-                    link: listImages[page][2],
+                    model.image,
+                    description: model.description,
+                    link: model.link,
                     isCurrent: currentPage == page,
                   ),
                 );
@@ -121,13 +106,17 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
 
 class ImageDescription extends StatefulWidget {
   final String image;
-  final String description;
   final bool isCurrent;
-  final String link;
+  final String? description;
+  final String? link;
 
-  const ImageDescription(this.image,
-      {Key? key, this.description = "", this.isCurrent = false, this.link = ""})
-      : super(key: key);
+  const ImageDescription(
+    this.image, {
+    Key? key,
+    this.description,
+    this.isCurrent = false,
+    this.link,
+  }) : super(key: key);
 
   @override
   State<ImageDescription> createState() => _ImageDescriptionState();
@@ -138,7 +127,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
 
   @override
   Widget build(BuildContext context) {
-    double sigma = isHover ? 2 : 0.5;
+    final double sigma = isHover ? 2 : 0.5;
     double opacity = 1;
     if (isHover) {
       opacity = 0.15;
@@ -163,54 +152,28 @@ class _ImageDescriptionState extends State<ImageDescription> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: opacity,
-              child: Image.asset(
-                widget.image,
-                fit: BoxFit.fitHeight,
-              ),
-            ),
-            BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: sigma,
-                sigmaY: sigma,
-              ),
-              child: Container(),
-            ),
-            isHover
-                ? Align(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      width: 250,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            widget.description,
-                            textAlign: TextAlign.center,
-                            style: MyAssetFonts.descriptionProjects,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          widget.link.isEmpty
-                              ? Container()
-                              : InkWell(
-                                  onTap: () {
-                                    Common.launch(widget.link);
-                                  },
-                                  child: Text(
-                                    "More info",
-                                    style: MyAssetFonts.descriptionNameLink,
-                                  ),
-                                ),
-                        ],
+            _buildImage(opacity),
+            _buildFilter(sigma),
+            if (isHover)
+              Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.description ?? '',
+                        textAlign: TextAlign.center,
+                        style: MyAssetFonts.descriptionProjects,
                       ),
-                    ),
-                  )
-                : Container()
+                      const SizedBox(height: 8),
+                      _buildMoreInfoButton(),
+                    ],
+                  ),
+                ),
+              )
           ],
         ),
       ),
@@ -234,56 +197,69 @@ class _ImageDescriptionState extends State<ImageDescription> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: opacity,
-              child: Image.asset(
-                widget.image,
-                fit: BoxFit.fitHeight,
-              ),
-            ),
-            BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: sigma,
-                sigmaY: sigma,
-              ),
-              child: Container(),
-            ),
-            isHover
-                ? Align(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      width: 250,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            widget.description,
-                            textAlign: TextAlign.center,
-                            style: MyAssetFonts.descriptionName,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          widget.link.isEmpty
-                              ? Container()
-                              : InkWell(
-                                  onTap: () {
-                                    Common.launch(widget.link);
-                                  },
-                                  child: Text(
-                                    "More info",
-                                    style: MyAssetFonts.descriptionNameLink,
-                                  ),
-                                ),
-                        ],
+            _buildImage(opacity),
+            _buildFilter(sigma),
+            if (isHover)
+              Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.description ?? '',
+                        textAlign: TextAlign.center,
+                        style: MyAssetFonts.descriptionName,
                       ),
-                    ),
-                  )
-                : Container()
+                      const SizedBox(height: 8),
+                      _buildMoreInfoButton(),
+                    ],
+                  ),
+                ),
+              )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildImage(double opacity) {
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 200),
+      opacity: opacity,
+      child: Image.network(
+        widget.image,
+        fit: BoxFit.fitHeight,
+      ),
+    );
+  }
+
+  Widget _buildFilter(double sigma) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(
+        sigmaX: sigma,
+        sigmaY: sigma,
+      ),
+      child: Container(),
+    );
+  }
+
+  Widget _buildMoreInfoButton() {
+    if (widget.link != null && widget.link!.isEmpty) {
+      return Container();
+    }
+
+    final String moreInfoTitle = RemoteConfigUtils.getValueString(
+        RemoteConfigEnum.recentProjectsText.key);
+    return InkWell(
+      onTap: () {
+        Common.launch(widget.link!);
+      },
+      child: Text(
+        moreInfoTitle,
+        style: MyAssetFonts.descriptionNameLink,
       ),
     );
   }

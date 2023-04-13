@@ -37,7 +37,7 @@ class RemoteConfigUtils {
       await fetchAndActivate();
     } on Exception catch (e) {
       // handle error
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

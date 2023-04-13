@@ -36,7 +36,7 @@ class BlocHomePage extends BlocBase {
   }
 
   void updateShadow(int index) {
-    bool isContainZero = index == 0;
+    final bool isContainZero = index == 0;
     if (isContainZero && isShadow) {
       isShadow = false;
       _appBarShadowController.add(isShadow);

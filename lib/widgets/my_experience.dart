@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
+import '../enum/remote_config.dart';
+import '../model/experience_model.dart';
 import '../res/fonts.dart';
-import '../res/images.dart';
+import '../utils/remote_config.dart';
 import 'base_widget.dart';
 import 'my_title.dart';
 
@@ -13,68 +15,66 @@ class MyExperience extends BaseWidget {
 
   @override
   Widget buildPhone(BuildContext context) {
-    return const MyTimeLine();
+    return MyTimeLine();
   }
 
   @override
   Widget buildTablet(BuildContext context) {
-    return const MyTimeLine();
+    return MyTimeLine();
   }
 
   @override
   Widget buildWeb(BuildContext context) {
-    return const MyTimeLine();
+    return MyTimeLine();
   }
 }
 
 class MyTimeLine extends StatelessWidget {
-  const MyTimeLine({Key? key}) : super(key: key);
+  MyTimeLine({Key? key}) : super(key: key) {
+    experiences = experienceModelFromJson(
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.experience.key));
+  }
+
+  late final List<ExperienceModel> experiences;
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final expTitle =
+        RemoteConfigUtils.getValueString(RemoteConfigEnum.workExperienceText.key);
 
-    return Column(
-      children: [
-        const MyTitle("Work Experience"),
-        timelineExperience(
+    return ListView.builder(
+      itemBuilder: (_, int index) {
+        if (index == 0) {
+          return Center(child: MyTitle(expTitle));
+        }
+
+        final ExperienceModel model = experiences[index - 1];
+        return timelineExperience(
           screenWidth,
-          "09/2020 - Present",
-          "Be Group",
-          "Be is a Vietnamese tech company which is the CONNECTORS between customers and service providers. At Be Group, I have been building Cake - a digital bank that helps users to quickly create a banking account for some fundamental needs such as transferring money, managing cards or paying bills, etc.",
-          isFirst: false,
-          logo: MyAssetImages.imageBe,
-        ),
-        timelineExperience(
-          screenWidth,
-          "05/2019 - 09/2020",
-          "Sendo",
-          "Sendo is one of the leading e-commerce in Vietnam. At sendo, I built high quality landing pages such as Flash Sale and Daily Deal to integrate with Buyer app.",
-          isFirst: false,
-          logo: MyAssetImages.imageSendo,
-        ),
-        timelineExperience(
-          screenWidth,
-          "01/2018 - 05/2019",
-          "AIOZ",
-          "AIOZ is a Singapore-based company. At AIOZ, I built mobile app that integrating cutting-edge technology like Computer Vision and Machine Learning to help resolve problems.",
-          logo: MyAssetImages.imageAioz,
-        ),
-        timelineExperience(
-          screenWidth,
-          "07/2017 - 12/2017",
-          "Robert BOSCH Vietnam",
-          "The Bosch Group is a leading global supplier of technology and services. At Bosch, I worked with German customer to build software tool that log their work.",
-          isLast: true,
-          logo: MyAssetImages.imageBosch,
-        ),
-      ],
+          time: model.time,
+          company: model.company,
+          description: model.description,
+          isFirst: index == 1,
+          isLast: index == experiences.length,
+          logo: model.logo,
+        );
+      },
+      itemCount: experiences.length + 1,
+      primary: false,
+      shrinkWrap: true,
     );
   }
 
   Widget timelineExperience(
-      double screenWidth, String time, String exp, String description,
-      {bool isFirst = false, bool isLast = false, String logo = ""}) {
+    double screenWidth, {
+    required String company,
+    bool isFirst = false,
+    bool isLast = false,
+    String? logo,
+    String? time,
+    String? description,
+  }) {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(horizontal: screenWidth / 8),
@@ -94,10 +94,12 @@ class MyTimeLine extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                logo,
-                fit: BoxFit.cover,
-              ),
+              child: logo != null
+                  ? Image.network(
+                      logo,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(),
             ),
           ),
         ),
@@ -109,18 +111,20 @@ class MyTimeLine extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                exp,
+                company,
                 style: MyAssetFonts.companyName,
               ),
-              Text(
-                time,
-                style: MyAssetFonts.companyTimeline,
-              ),
+              if (time != null)
+                Text(
+                  time,
+                  style: MyAssetFonts.companyTimeline,
+                ),
               const SizedBox(height: 16),
-              Text(
-                description,
-                style: MyAssetFonts.companyDescription,
-              ),
+              if (description != null)
+                Text(
+                  description,
+                  style: MyAssetFonts.companyDescription,
+                ),
             ],
           ),
         ),
