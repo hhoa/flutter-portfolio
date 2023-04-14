@@ -1,15 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/bloc_homepage.dart';
-import '../enum/remote_config.dart';
-import '../res/colors.dart';
-import '../res/constants.dart';
-import '../res/fonts.dart';
-import '../res/images.dart';
-import '../utils/common.dart';
-import '../utils/remote_config.dart';
+import '../../../enum/layout_type.dart';
+import '../../../enum/remote_config.dart';
+import '../../../res/colors.dart';
+import '../../../res/constants.dart';
+import '../../../res/fonts.dart';
+import '../../../res/images.dart';
+import '../../../utils/common.dart';
+import '../../../utils/remote_config.dart';
+import '../cubit/home_cubit.dart';
 
 class MyProfile extends StatelessWidget {
   const MyProfile({Key? key}) : super(key: key);
@@ -23,7 +25,7 @@ class MyProfile extends StatelessWidget {
       height: screenHeight - MyConstants.heightAppBar,
       child: Stack(
         children: [
-          _buildImage(screenHeight),
+          _buildImage(context, screenHeight),
           _buildText(screenWidth),
         ],
       ),
@@ -31,12 +33,12 @@ class MyProfile extends StatelessWidget {
   }
 
   Widget _buildText(double screenWidth) {
-    final nameTitle =
-        RemoteConfigUtils.getValueString(RemoteConfigEnum.nameTitleText.key);
+    final nameTitle = RemoteConfigUtils.getValueString(
+        RemoteConfigEnum.nameTitleText.key);
     final introductionTitle = RemoteConfigUtils.getValueString(
         RemoteConfigEnum.myselfIntroductionText.key);
-    final downloadCvTitle =
-        RemoteConfigUtils.getValueString(RemoteConfigEnum.downloadCvText.key);
+    final downloadCvTitle = RemoteConfigUtils.getValueString(
+        RemoteConfigEnum.downloadCvText.key);
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -87,10 +89,11 @@ class MyProfile extends StatelessWidget {
     );
   }
 
-  Widget _buildImage(double screenHeight) {
+  Widget _buildImage(BuildContext context, double screenHeight) {
+    final LayoutType currentType = context.read<HomeCubit>().currentType;
     final double padding = screenHeight / 8;
-    final double sigma = BlocHomePage.currentType == LayoutType.web ? 0.1 : 3;
-    final double opacity = BlocHomePage.currentType == LayoutType.web ? 1 : 0.4;
+    final double sigma = currentType == LayoutType.web ? 0.1 : 3;
+    final double opacity = currentType == LayoutType.web ? 1 : 0.4;
 
     return Positioned(
       right: 0,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../enum/remote_config.dart';
-import '../model/contact_model.dart';
-import '../res/fonts.dart';
-import '../utils/common.dart';
-import '../utils/remote_config.dart';
-import 'special_name.dart';
+import '../../../enum/remote_config.dart';
+import '../../../model/contact_model.dart';
+import '../../../res/fonts.dart';
+import '../../../utils/common.dart';
+import '../../../utils/remote_config.dart';
+import '../../../widgets/special_name.dart';
 
 class MyContact extends StatelessWidget {
   MyContact({Key? key}) : super(key: key) {
@@ -36,8 +36,8 @@ class MyContact extends StatelessWidget {
   }
 
   Widget buildTextFollow() {
-    final followMeTitle =
-        RemoteConfigUtils.getValueString(RemoteConfigEnum.followMeText.key);
+    final followMeTitle = RemoteConfigUtils.getValueString(
+        RemoteConfigEnum.followMeText.key);
     return Text(
       followMeTitle,
       style: MyAssetFonts.followText,

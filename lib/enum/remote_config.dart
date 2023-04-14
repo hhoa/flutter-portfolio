@@ -11,6 +11,7 @@ enum RemoteConfigEnum {
   moreInfoText,
   workExperienceText,
   followMeText,
+  listAppBarTitleText,
 }
 
 extension RemoteConfigExt on RemoteConfigEnum {
@@ -40,6 +41,8 @@ extension RemoteConfigExt on RemoteConfigEnum {
         return 'work_experience_text';
       case RemoteConfigEnum.followMeText:
         return 'follow_me_text';
+      case RemoteConfigEnum.listAppBarTitleText:
+        return 'list_appbar_title_text';
     }
   }
 }

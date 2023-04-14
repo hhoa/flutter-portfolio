@@ -8,7 +8,8 @@ import 'package:flutter/foundation.dart';
 class RemoteConfigUtils {
   RemoteConfigUtils._();
 
-  static final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+  static final FirebaseRemoteConfig _remoteConfig =
+      FirebaseRemoteConfig.instance;
 
   static String getValueString(String key) => _remoteConfig.getString(key);
 
@@ -21,8 +22,10 @@ class RemoteConfigUtils {
     try {
       return jsonDecode(jsonString);
     } on Exception catch (e) {
-      FirebaseCrashlytics.instance.recordError(e.toString(), null,
-          reason: 'getValueJson: jsonDecode failed with value $jsonString');
+      if (!kIsWeb) {
+        FirebaseCrashlytics.instance.recordError(e.toString(), null,
+            reason: 'getValueJson: jsonDecode failed with value $jsonString');
+      }
     }
     return {};
   }

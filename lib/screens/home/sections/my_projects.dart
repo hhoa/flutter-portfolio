@@ -1,15 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/bloc_homepage.dart';
-import '../enum/remote_config.dart';
-import '../model/project_model.dart';
-import '../res/fonts.dart';
-import '../utils/common.dart';
-import '../utils/remote_config.dart';
-import 'base_widget.dart';
-import 'my_title.dart';
+import '../../../enum/layout_type.dart';
+import '../../../enum/remote_config.dart';
+import '../../../model/project_model.dart';
+import '../../../res/fonts.dart';
+import '../../../utils/common.dart';
+import '../../../utils/remote_config.dart';
+import '../../../widgets/base_widget.dart';
+import '../../../widgets/my_title.dart';
+import '../cubit/home_cubit.dart';
 
 class MyProjects extends BaseWidget {
   const MyProjects({Key? key}) : super(key: key);
@@ -127,6 +129,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
 
   @override
   Widget build(BuildContext context) {
+    final LayoutType currentType = context.read<HomeCubit>().currentType;
     final double sigma = isHover ? 2 : 0.5;
     double opacity = 1;
     if (isHover) {
@@ -135,7 +138,7 @@ class _ImageDescriptionState extends State<ImageDescription> {
       opacity = widget.isCurrent ? 1 : 0.5;
     }
 
-    return BlocHomePage.currentType == LayoutType.phone
+    return currentType == LayoutType.phone
         ? buildPhone(sigma, opacity)
         : buildWeb(sigma, opacity);
   }

@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
-import '../enum/remote_config.dart';
-import '../model/experience_model.dart';
-import '../res/fonts.dart';
-import '../utils/remote_config.dart';
-import 'base_widget.dart';
-import 'my_title.dart';
+import '../../../enum/remote_config.dart';
+import '../../../model/experience_model.dart';
+import '../../../res/fonts.dart';
+import '../../../utils/remote_config.dart';
+import '../../../widgets/base_widget.dart';
+import '../../../widgets/my_title.dart';
 
 class MyExperience extends BaseWidget {
   const MyExperience({Key? key}) : super(key: key);

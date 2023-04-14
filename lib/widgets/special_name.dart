@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../enum/remote_config.dart';
 import '../res/fonts.dart';
 import '../utils/remote_config.dart';
@@ -13,9 +14,11 @@ class SpecialTextName extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Text(
-        myName,
-        style: MyAssetFonts.specialAppBarText,
+      child: Center(
+        child: Text(
+          myName,
+          style: MyAssetFonts.specialAppBarText,
+        ),
       ),
     );
   }
