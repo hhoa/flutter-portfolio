@@ -10,7 +10,6 @@ import '../../../res/constants.dart';
 import '../../../res/fonts.dart';
 import '../../../res/images.dart';
 import '../../../utils/common.dart';
-import '../../../utils/remote_config.dart';
 import '../cubit/home_cubit.dart';
 
 class MyProfile extends StatelessWidget {
@@ -26,19 +25,20 @@ class MyProfile extends StatelessWidget {
       child: Stack(
         children: [
           _buildImage(context, screenHeight),
-          _buildText(screenWidth),
+          _buildText(context, screenWidth),
         ],
       ),
     );
   }
 
-  Widget _buildText(double screenWidth) {
-    final nameTitle = RemoteConfigUtils.getValueString(
-        RemoteConfigEnum.nameTitleText.key);
-    final introductionTitle = RemoteConfigUtils.getValueString(
-        RemoteConfigEnum.myselfIntroductionText.key);
-    final downloadCvTitle = RemoteConfigUtils.getValueString(
-        RemoteConfigEnum.downloadCvText.key);
+  Widget _buildText(BuildContext context, double screenWidth) {
+    final HomeCubit homeCubit = context.read<HomeCubit>();
+    final nameTitle =
+        homeCubit.getRemoteConfigString(RemoteConfigEnum.nameTitleText);
+    final introductionTitle = homeCubit
+        .getRemoteConfigString(RemoteConfigEnum.myselfIntroductionText);
+    final downloadCvTitle =
+        homeCubit.getRemoteConfigString(RemoteConfigEnum.downloadCvText);
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -59,14 +59,15 @@ class MyProfile extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
+              key: const Key('profile-downloadcv'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyAssetColor.appColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
               ),
               onPressed: () {
-                final String link = RemoteConfigUtils.getValueString(
-                    RemoteConfigEnum.linkCV.key);
+                final String link =
+                    homeCubit.getRemoteConfigString(RemoteConfigEnum.linkCV);
 
                 Common.launch(link);
               },

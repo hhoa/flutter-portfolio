@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../enum/remote_config.dart';
 import '../../../model/contact_model.dart';
 import '../../../res/fonts.dart';
 import '../../../utils/common.dart';
-import '../../../utils/remote_config.dart';
 import '../../../widgets/special_name.dart';
+import '../cubit/home_cubit.dart';
 
 class MyContact extends StatelessWidget {
-  MyContact({Key? key}) : super(key: key) {
-    listContacts = contactModelFromJson(
-        RemoteConfigUtils.getValueString(RemoteConfigEnum.followMe.key));
-  }
-
-  late final List<ContactModel> listContacts;
+  const MyContact({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
+    final String myName = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.myNameText);
 
     return Container(
       height: screenHeight / 3,
@@ -25,26 +24,31 @@ class MyContact extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SpecialTextName(),
+          SpecialTextName(myName),
           const SizedBox(height: 20),
-          buildTextFollow(),
+          buildTextFollow(context),
           const SizedBox(height: 20),
-          buildIcons(),
+          buildIcons(context),
         ],
       ),
     );
   }
 
-  Widget buildTextFollow() {
-    final followMeTitle = RemoteConfigUtils.getValueString(
-        RemoteConfigEnum.followMeText.key);
+  Widget buildTextFollow(BuildContext context) {
+    final followMeTitle = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.followMeText);
     return Text(
       followMeTitle,
       style: MyAssetFonts.followText,
     );
   }
 
-  Widget buildIcons() {
+  Widget buildIcons(BuildContext context) {
+    final List<ContactModel> contacts = contactModelFromJson(context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.followMe));
+
     return Container(
       height: MyAssetFonts.oneRem,
       alignment: Alignment.center,
@@ -53,15 +57,15 @@ class MyContact extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (_, int index) {
-          final ContactModel model = listContacts[index];
+          final ContactModel model = contacts[index];
           if (model.isNull) {
             return Container();
           }
           return ContactIcon(model.icon!, model.link!);
         },
         separatorBuilder: (_, int index) => SizedBox(
-            width: listContacts[index].isNull ? 0 : MyAssetFonts.oneRem * 2),
-        itemCount: listContacts.length,
+            width: contacts[index].isNull ? 0 : MyAssetFonts.oneRem * 2),
+        itemCount: contacts.length,
       ),
     );
   }

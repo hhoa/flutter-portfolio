@@ -2,15 +2,18 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../enum/layout_type.dart';
+import '../../../enum/remote_config.dart';
+import '../../../repository/remote_config.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  HomeCubit(this._remoteConfig) : super(HomeInitial());
 
+  final RemoteConfigRepository _remoteConfig;
   LayoutType currentType = LayoutType.web;
   int currentSection = 0;
-  bool isShadow = false;
+  bool _isShadow = false;
 
   void updateLayoutType(double screenWidth) {
     if (screenWidth > 950) {
@@ -28,12 +31,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   void updateShadow(int index) {
     final bool isFirstSection = index == 0;
-    if (isFirstSection && isShadow) {
-      isShadow = false;
-      emit(HomeUpdateShadow(isShadow: isShadow));
-    } else if (!isFirstSection && !isShadow) {
-      isShadow = true;
-      emit(HomeUpdateShadow(isShadow: isShadow));
+    if (isFirstSection && _isShadow) {
+      _isShadow = false;
+      emit(HomeUpdateShadow(isShadow: _isShadow));
+    } else if (!isFirstSection && !_isShadow) {
+      _isShadow = true;
+      emit(HomeUpdateShadow(isShadow: _isShadow));
     }
   }
 
@@ -43,4 +46,7 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeUpdateCurrentSection(index: index, isScroll: isScroll));
     }
   }
+
+  String getRemoteConfigString(RemoteConfigEnum remoteConfigEnum) =>
+      _remoteConfig.getValueString(remoteConfigEnum.key);
 }

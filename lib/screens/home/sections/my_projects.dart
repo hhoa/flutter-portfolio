@@ -8,7 +8,6 @@ import '../../../enum/remote_config.dart';
 import '../../../model/project_model.dart';
 import '../../../res/fonts.dart';
 import '../../../utils/common.dart';
-import '../../../utils/remote_config.dart';
 import '../../../widgets/base_widget.dart';
 import '../../../widgets/my_title.dart';
 import '../cubit/home_cubit.dart';
@@ -52,13 +51,14 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
   void initState() {
     super.initState();
 
-    projects = projectModelFromJson(
-        RemoteConfigUtils.getValueString(RemoteConfigEnum.project.key));
-    currentPage = (projectLength / 2).round();
+    projects = projectModelFromJson(context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.project));
+    currentPage = projectLength - 1;
     _pageController = PageController(
         initialPage: currentPage, viewportFraction: widget.viewPort);
     _pageController.addListener(() {
-      final int page = _pageController.page!.toInt() % (projectLength - 1);
+      final int page = calculatePage(_pageController.page!.toInt());
       if (page != currentPage) {
         if (mounted) {
           setState(() {
@@ -69,12 +69,20 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
     });
   }
 
+  int calculatePage(int index) {
+    if (projectLength % 2 == 0) {
+      return index % projectLength - 1;
+    }
+    return index % projectLength;
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-    final String recentProjectsTitle = RemoteConfigUtils.getValueString(
-        RemoteConfigEnum.recentProjectsText.key);
+    final String recentProjectsTitle = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.recentProjectsText);
 
     return Column(
       children: [
@@ -86,7 +94,7 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
           child: PageView.builder(
               controller: _pageController,
               itemBuilder: (context, index) {
-                final int page = index % (projectLength - 1);
+                final int page = calculatePage(index);
                 final ProjectModel model = projects[page];
 
                 return SizedBox(
@@ -254,8 +262,9 @@ class _ImageDescriptionState extends State<ImageDescription> {
       return Container();
     }
 
-    final String moreInfoTitle = RemoteConfigUtils.getValueString(
-        RemoteConfigEnum.recentProjectsText.key);
+    final String moreInfoTitle = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.moreInfoText);
     return InkWell(
       onTap: () {
         Common.launch(widget.link!);

@@ -61,6 +61,7 @@ class _HomeViewState extends State<HomeView> {
                   current is HomeUpdateCurrentSection,
               child: Column(
                 children: [
+                  // ignore: prefer_const_constructors
                   MyAppBar(),
                   Expanded(child: _buildPageView()),
                 ],
@@ -84,9 +85,10 @@ class _HomeViewState extends State<HomeView> {
           case 1:
             return const MyExperience();
           case 2:
-            return const MyProjects();
+            // ignore: prefer_const_constructors
+            return MyProjects();
           case 3:
-            return MyContact();
+            return const MyContact();
           default:
             return Container();
         }

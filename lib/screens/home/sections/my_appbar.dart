@@ -4,44 +4,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../enum/remote_config.dart';
 import '../../../res/colors.dart';
 import '../../../res/constants.dart';
-import '../../../utils/remote_config.dart';
 import '../../../widgets/base_widget.dart';
 import '../../../widgets/normal_text.dart';
 import '../../../widgets/special_name.dart';
 import '../cubit/home_cubit.dart';
 
 class MyAppBar extends BaseWidget {
-  MyAppBar({Key? key}) : super(key: key) {
-    titleAppBar = RemoteConfigUtils.getValueString(
-            RemoteConfigEnum.listAppBarTitleText.key)
-        .split(',');
-  }
-
-  late final List<String> titleAppBar;
+  const MyAppBar({Key? key}) : super(key: key);
 
   @override
   Widget buildPhone(BuildContext context) {
-    return MyAppBarMobile(titleAppBar);
+    return const MyAppBarMobile();
   }
 
   @override
   Widget buildWeb(BuildContext context) {
-    return MyAppBarWeb(titleAppBar);
+    return const MyAppBarWeb();
   }
 
   @override
   Widget buildTablet(BuildContext context) {
-    return MyAppBarWeb(titleAppBar);
+    return const MyAppBarWeb();
   }
 }
 
 class MyAppBarMobile extends StatelessWidget {
-  const MyAppBarMobile(this.titleAppBar, {Key? key}) : super(key: key);
-
-  final List<String> titleAppBar;
+  const MyAppBarMobile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final List<String> titleAppBar = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.listAppBarTitleText)
+        .split(',');
+    final String myName = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.myNameText);
+
     return SafeArea(
       top: true,
       bottom: false,
@@ -54,6 +53,7 @@ class MyAppBarMobile extends StatelessWidget {
             isShadow = state.isShadow;
           }
           return Container(
+            key: const Key('container-appbar-mobile'),
             height: MyConstants.heightAppBar,
             decoration: BoxDecoration(
                 color: MyAssetColor.backgroundColor,
@@ -70,13 +70,14 @@ class MyAppBarMobile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox(width: 48),
-                const SpecialTextName(),
+                SpecialTextName(myName),
                 IconButton(
+                  key: const Key('appbar-icon-menu'),
                     icon: Icon(
                       Icons.menu,
                       color: MyAssetColor.appColor,
                     ),
-                    onPressed: () => openDialog(context)),
+                    onPressed: () => openDialog(context, myName, titleAppBar)),
               ],
             ),
           );
@@ -85,7 +86,8 @@ class MyAppBarMobile extends StatelessWidget {
     );
   }
 
-  void openDialog(BuildContext context) {
+  void openDialog(
+      BuildContext context, String myName, List<String> titleAppBar) {
     final currentSection = context.read<HomeCubit>().currentSection;
 
     showGeneralDialog(
@@ -112,8 +114,9 @@ class MyAppBarMobile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const SizedBox(width: 48),
-                          const SpecialTextName(),
+                          SpecialTextName(myName),
                           IconButton(
+                            key: const Key('appbar-icon-close'),
                             icon:
                                 Icon(Icons.close, color: MyAssetColor.appColor),
                             onPressed: () {
@@ -129,6 +132,7 @@ class MyAppBarMobile extends StatelessWidget {
                       itemBuilder: (_, int index) {
                         return NormalText(
                           titleAppBar[index],
+                          key: Key('normalText-${titleAppBar[index]}'),
                           onTap: () => tapPage(context, index),
                           isChosen: index == currentSection,
                         );
@@ -152,9 +156,7 @@ class MyAppBarMobile extends StatelessWidget {
 }
 
 class MyAppBarWeb extends StatefulWidget {
-  const MyAppBarWeb(this.titleAppBar, {Key? key}) : super(key: key);
-
-  final List<String> titleAppBar;
+  const MyAppBarWeb({Key? key}) : super(key: key);
 
   @override
   State<MyAppBarWeb> createState() => _MyAppBarWebState();
@@ -163,10 +165,16 @@ class MyAppBarWeb extends StatefulWidget {
 class _MyAppBarWebState extends State<MyAppBarWeb> {
   bool isHover = false;
 
-  List<String> get titleAppBar => widget.titleAppBar;
-
   @override
   Widget build(BuildContext context) {
+    final List<String> titleAppBar = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.listAppBarTitleText)
+        .split(',');
+    final String myName = context
+        .read<HomeCubit>()
+        .getRemoteConfigString(RemoteConfigEnum.myNameText);
+
     return MouseRegion(
       onEnter: (_) {
         if (mounted) {
@@ -192,6 +200,7 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
           }
 
           return Container(
+            key: const Key('container-appbar-web'),
             height: MyConstants.heightAppBar,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -221,13 +230,14 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, int index) {
                     if (index == nameIndex) {
-                      return const SpecialTextName();
+                      return SpecialTextName(myName);
                     }
 
                     final int appBarIndex =
                         index < nameIndex ? index : index - 1;
                     return NormalText(
                       titleAppBar[appBarIndex],
+                      key: Key('normalText-${titleAppBar[appBarIndex]}'),
                       onTap: () => tapPage(appBarIndex),
                       isChosen: appBarIndex == currentSection,
                     );
