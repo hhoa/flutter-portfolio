@@ -112,7 +112,7 @@ class MyProfile extends StatelessWidget {
             child: SizedBox(
               height: screenHeight,
               child: Image.asset(
-                MyAssetImages.imageProfile,
+                MyAssetImages.profile,
                 fit: BoxFit.fitHeight,
               ),
             ),

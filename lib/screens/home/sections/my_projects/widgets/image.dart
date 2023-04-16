@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../res/images.dart';
 
 class ProjectImage extends StatelessWidget {
   const ProjectImage({
@@ -15,8 +18,14 @@ class ProjectImage extends StatelessWidget {
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 200),
       opacity: opacity,
-      child: Image.network(
-        image,
+      child: CachedNetworkImage(
+        imageUrl: image,
+        placeholder: (_, url) {
+          return Image.asset(
+            MyAssetImages.verticalPlaceholder,
+            fit: BoxFit.fitHeight,
+          );
+        },
         fit: BoxFit.fitHeight,
       ),
     );

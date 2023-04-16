@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import '../res/fonts.dart';
+import '../res/images.dart';
 
 class TimelineExperience extends StatelessWidget {
   const TimelineExperience({
@@ -52,8 +54,14 @@ class TimelineExperience extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: logo != null
-              ? Image.network(
-                  logo!,
+              ? CachedNetworkImage(
+                  imageUrl: logo!,
+                  placeholder: (_, __) {
+                    return Image.asset(
+                      MyAssetImages.logoPlaceholder,
+                      fit: BoxFit.fitHeight,
+                    );
+                  },
                   fit: BoxFit.cover,
                 )
               : Container(),

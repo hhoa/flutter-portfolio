@@ -33,11 +33,13 @@ dependencies:
   firebase_core: ^2.9.0
   firebase_remote_config: ^4.0.0
   firebase_crashlytics: ^3.1.0
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
+  network_image_mock: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

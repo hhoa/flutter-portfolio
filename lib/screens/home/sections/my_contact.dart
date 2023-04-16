@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -104,8 +105,8 @@ class _ContactIconState extends State<ContactIcon> {
         child: AnimatedOpacity(
           duration: const Duration(milliseconds: 200),
           opacity: isHover ? 1 : 0.3,
-          child: Image.network(
-            widget.image,
+          child: CachedNetworkImage(
+            imageUrl: widget.image,
             width: MyAssetFonts.oneRem,
             height: MyAssetFonts.oneRem,
           ),
