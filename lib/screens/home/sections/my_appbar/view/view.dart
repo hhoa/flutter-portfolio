@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../enum/remote_config.dart';
-import '../../../res/colors.dart';
-import '../../../res/constants.dart';
-import '../../../widgets/base_widget.dart';
-import '../../../widgets/normal_text.dart';
-import '../../../widgets/special_name.dart';
-import '../cubit/home_cubit.dart';
+import '../../../../../res/colors.dart';
+import '../../../../../res/constants.dart';
+import '../../../../../widgets/base_widget.dart';
+import '../../../../../widgets/normal_text.dart';
+import '../../../../../widgets/special_name.dart';
+import '../../../cubit/home_cubit.dart';
+import '../cubit/my_app_bar_cubit.dart';
 
-class MyAppBar extends BaseWidget {
-  const MyAppBar({Key? key}) : super(key: key);
+class MyAppBarView extends BaseWidget {
+  const MyAppBarView({Key? key}) : super(key: key);
 
   @override
   Widget buildPhone(BuildContext context) {
@@ -33,13 +33,8 @@ class MyAppBarMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> titleAppBar = context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.listAppBarTitleText)
-        .split(',');
-    final String myName = context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.myNameText);
+    final List<String> titleAppBar = context.read<MyAppBarCubit>().titleAppBar;
+    final String myName = context.read<MyAppBarCubit>().myName;
 
     return SafeArea(
       top: true,
@@ -72,7 +67,7 @@ class MyAppBarMobile extends StatelessWidget {
                 const SizedBox(width: 48),
                 SpecialTextName(myName),
                 IconButton(
-                  key: const Key('appbar-icon-menu'),
+                    key: const Key('appbar-icon-menu'),
                     icon: Icon(
                       Icons.menu,
                       color: MyAssetColor.appColor,
@@ -155,40 +150,17 @@ class MyAppBarMobile extends StatelessWidget {
   }
 }
 
-class MyAppBarWeb extends StatefulWidget {
+class MyAppBarWeb extends StatelessWidget {
   const MyAppBarWeb({Key? key}) : super(key: key);
 
   @override
-  State<MyAppBarWeb> createState() => _MyAppBarWebState();
-}
-
-class _MyAppBarWebState extends State<MyAppBarWeb> {
-  bool isHover = false;
-
-  @override
   Widget build(BuildContext context) {
-    final List<String> titleAppBar = context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.listAppBarTitleText)
-        .split(',');
-    final String myName = context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.myNameText);
-
     return MouseRegion(
       onEnter: (_) {
-        if (mounted) {
-          setState(() {
-            isHover = true;
-          });
-        }
+        context.read<MyAppBarCubit>().updateHover(isHover: true);
       },
       onExit: (_) {
-        if (mounted) {
-          setState(() {
-            isHover = false;
-          });
-        }
+        context.read<MyAppBarCubit>().updateHover(isHover: false);
       },
       child: BlocBuilder<HomeCubit, HomeState>(
         buildWhen: (HomeState prev, HomeState current) =>
@@ -199,60 +171,76 @@ class _MyAppBarWebState extends State<MyAppBarWeb> {
             isShadow = state.isShadow;
           }
 
-          return Container(
-            key: const Key('container-appbar-web'),
-            height: MyConstants.heightAppBar,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: isHover ? Colors.white : MyAssetColor.backgroundColor,
-                boxShadow: isShadow
-                    ? [
-                        const BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0, 4),
-                            blurRadius: 4,
-                            spreadRadius: 4)
-                      ]
-                    : null),
-            child: BlocBuilder<HomeCubit, HomeState>(
-              buildWhen: (prev, current) => current is HomeUpdateCurrentSection,
-              builder: (context, state) {
-                int currentSection = 0;
-                if (state is HomeUpdateCurrentSection) {
-                  currentSection = state.index;
-                }
-
-                final int nameIndex = titleAppBar.length ~/ 2;
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (_, int index) {
-                    if (index == nameIndex) {
-                      return SpecialTextName(myName);
-                    }
-
-                    final int appBarIndex =
-                        index < nameIndex ? index : index - 1;
-                    return NormalText(
-                      titleAppBar[appBarIndex],
-                      key: Key('normalText-${titleAppBar[appBarIndex]}'),
-                      onTap: () => tapPage(appBarIndex),
-                      isChosen: appBarIndex == currentSection,
-                    );
-                  },
-                  itemCount: titleAppBar.length + 1,
-                );
-              },
-            ),
+          return BlocBuilder<MyAppBarCubit, MyAppBarState>(
+            buildWhen: (prev, current) => current is MyAppBarHover,
+            builder: (context, state) {
+              bool isHover = false;
+              if (state is MyAppBarHover) {
+                isHover = state.isHover;
+              }
+              return Container(
+                key: const Key('container-appbar-web'),
+                height: MyConstants.heightAppBar,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color:
+                        isHover ? Colors.white : MyAssetColor.backgroundColor,
+                    boxShadow: isShadow
+                        ? [
+                            const BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 4),
+                                blurRadius: 4,
+                                spreadRadius: 4)
+                          ]
+                        : null),
+                child: _buildListTitle(context),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  void tapPage(int index) {
+  Widget _buildListTitle(BuildContext context) {
+    final List<String> titleAppBar = context.read<MyAppBarCubit>().titleAppBar;
+    final String myName = context.read<MyAppBarCubit>().myName;
+
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (prev, current) => current is HomeUpdateCurrentSection,
+      builder: (context, state) {
+        int currentSection = 0;
+        if (state is HomeUpdateCurrentSection) {
+          currentSection = state.index;
+        }
+
+        final int nameIndex = titleAppBar.length ~/ 2;
+        return ListView.builder(
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (_, int index) {
+            if (index == nameIndex) {
+              return SpecialTextName(myName);
+            }
+
+            final int appBarIndex = index < nameIndex ? index : index - 1;
+            return NormalText(
+              titleAppBar[appBarIndex],
+              key: Key('normalText-${titleAppBar[appBarIndex]}'),
+              onTap: () => tapPage(context, appBarIndex),
+              isChosen: appBarIndex == currentSection,
+            );
+          },
+          itemCount: titleAppBar.length + 1,
+        );
+      },
+    );
+  }
+
+  void tapPage(BuildContext context, int index) {
     context.read<HomeCubit>().changePageIndex(index);
   }
 }

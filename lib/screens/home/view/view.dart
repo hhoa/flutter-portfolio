@@ -4,11 +4,11 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../res/colors.dart';
 import '../cubit/home_cubit.dart';
-import '../sections/my_appbar.dart';
+import '../sections/my_appbar/view/page.dart';
 import '../sections/my_contact.dart';
 import '../sections/my_experience.dart';
 import '../sections/my_profile.dart';
-import '../sections/my_projects.dart';
+import '../sections/my_projects/view/page.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
