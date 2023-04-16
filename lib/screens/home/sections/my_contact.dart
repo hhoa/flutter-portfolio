@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../enum/remote_config.dart';
 import '../../../model/contact_model.dart';
 import '../../../res/fonts.dart';
 import '../../../utils/common.dart';
@@ -14,9 +13,6 @@ class MyContact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
-    final String myName = context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.myNameText);
 
     return Container(
       height: screenHeight / 3,
@@ -24,7 +20,11 @@ class MyContact extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SpecialTextName(myName),
+          Builder(builder: (context) {
+            final String myName =
+                context.select((HomeCubit cubit) => cubit.myName);
+            return SpecialTextName(myName);
+          }),
           const SizedBox(height: 20),
           buildTextFollow(context),
           const SizedBox(height: 20),
@@ -35,38 +35,38 @@ class MyContact extends StatelessWidget {
   }
 
   Widget buildTextFollow(BuildContext context) {
-    final followMeTitle = context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.followMeText);
-    return Text(
-      followMeTitle,
-      style: MyAssetFonts.followText,
-    );
+    return Builder(builder: (context) {
+      final followMeTitle =
+          context.select((HomeCubit cubit) => cubit.followMeText);
+      return Text(
+        followMeTitle,
+        style: MyAssetFonts.followText,
+      );
+    });
   }
 
   Widget buildIcons(BuildContext context) {
-    final List<ContactModel> contacts = contactModelFromJson(context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.followMe));
-
     return Container(
       height: MyAssetFonts.oneRem,
       alignment: Alignment.center,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (_, int index) {
-          final ContactModel model = contacts[index];
-          if (model.isNull) {
-            return Container();
-          }
-          return ContactIcon(model.icon!, model.link!);
-        },
-        separatorBuilder: (_, int index) => SizedBox(
-            width: contacts[index].isNull ? 0 : MyAssetFonts.oneRem * 2),
-        itemCount: contacts.length,
-      ),
+      child: Builder(builder: (context) {
+        final contacts = context.select((HomeCubit cubit) => cubit.contacts);
+        return ListView.separated(
+          scrollDirection: Axis.horizontal,
+          physics: const ClampingScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (_, int index) {
+            final ContactModel model = contacts[index];
+            if (model.isNull) {
+              return Container();
+            }
+            return ContactIcon(model.icon!, model.link!);
+          },
+          separatorBuilder: (_, int index) => SizedBox(
+              width: contacts[index].isNull ? 0 : MyAssetFonts.oneRem * 2),
+          itemCount: contacts.length,
+        );
+      }),
     );
   }
 }

@@ -32,14 +32,6 @@ class MyProfile extends StatelessWidget {
   }
 
   Widget _buildText(BuildContext context, double screenWidth) {
-    final HomeCubit homeCubit = context.read<HomeCubit>();
-    final nameTitle =
-        homeCubit.getRemoteConfigString(RemoteConfigEnum.nameTitleText);
-    final introductionTitle = homeCubit
-        .getRemoteConfigString(RemoteConfigEnum.myselfIntroductionText);
-    final downloadCvTitle =
-        homeCubit.getRemoteConfigString(RemoteConfigEnum.downloadCvText);
-
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -48,15 +40,23 @@ class MyProfile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              nameTitle,
-              style: MyAssetFonts.bigBoldName,
-            ),
+            Builder(builder: (context) {
+              final nameTitle =
+                  context.select((HomeCubit cubit) => cubit.nameTitle);
+              return Text(
+                nameTitle,
+                style: MyAssetFonts.bigBoldName,
+              );
+            }),
             const SizedBox(height: 30),
-            Text(
-              introductionTitle,
-              style: MyAssetFonts.descriptionName,
-            ),
+            Builder(builder: (context) {
+              final introductionTitle =
+                  context.select((HomeCubit cubit) => cubit.introductionTitle);
+              return Text(
+                introductionTitle,
+                style: MyAssetFonts.descriptionName,
+              );
+            }),
             const SizedBox(height: 30),
             ElevatedButton(
               key: const Key('profile-downloadcv'),
@@ -66,22 +66,27 @@ class MyProfile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20)),
               ),
               onPressed: () {
-                final String link =
-                    homeCubit.getRemoteConfigString(RemoteConfigEnum.linkCV);
+                final String link = context
+                    .read<HomeCubit>()
+                    .getRemoteConfigString(RemoteConfigEnum.linkCV);
 
                 Common.launch(link);
               },
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  downloadCvTitle,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: MyAssetFonts.fontFamily,
-                    fontSize: 16,
-                  ),
-                ),
+                child: Builder(builder: (context) {
+                  final downloadCvTitle = context
+                      .select((HomeCubit cubit) => cubit.downloadCvTitle);
+                  return Text(
+                    downloadCvTitle,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: MyAssetFonts.fontFamily,
+                      fontSize: 16,
+                    ),
+                  );
+                }),
               ),
             ),
           ],

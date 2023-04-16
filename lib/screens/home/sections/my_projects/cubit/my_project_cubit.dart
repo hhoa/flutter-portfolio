@@ -8,21 +8,24 @@ import '../../../../../repository/remote_config.dart';
 part 'my_project_state.dart';
 
 class MyProjectCubit extends Cubit<MyProjectState> {
-  MyProjectCubit(this.remoteConfigRepository) : super(MyProjectInitial()) {
+  MyProjectCubit(RemoteConfigRepository remoteConfigRepository)
+      : super(MyProjectInitial()) {
+    recentProjectsTitle = remoteConfigRepository
+        .getValueString(RemoteConfigEnum.recentProjectsText.key);
+    moreInfoTitle = remoteConfigRepository
+        .getValueString(RemoteConfigEnum.moreInfoText.key);
     projects = projectModelFromJson(
         remoteConfigRepository.getValueString(RemoteConfigEnum.project.key));
     currentPage = projectLength - 1;
   }
 
-  final RemoteConfigRepository remoteConfigRepository;
   late final List<ProjectModel> projects;
+  late final String recentProjectsTitle;
+  late final String moreInfoTitle;
   int currentPage = 0;
   int currentFocus = -1;
 
   int get projectLength => projects.length;
-
-  String get recentProjectsTitle => remoteConfigRepository
-      .getValueString(RemoteConfigEnum.recentProjectsText.key);
 
   void updateFocus({required String image, required bool isFocus}) {
     final int index = projects.indexWhere((element) => element.image == image);

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../enum/remote_config.dart';
 import '../../../../../res/fonts.dart';
 import '../../../../../utils/common.dart';
-import '../../../cubit/home_cubit.dart';
+import '../cubit/my_project_cubit.dart';
 
 class ProjectDescription extends StatelessWidget {
   const ProjectDescription({
@@ -52,17 +51,18 @@ class ProjectDescription extends StatelessWidget {
       return Container();
     }
 
-    final String moreInfoTitle = context
-        .read<HomeCubit>()
-        .getRemoteConfigString(RemoteConfigEnum.moreInfoText);
     return InkWell(
       onTap: () {
         Common.launch(link!);
       },
-      child: Text(
-        moreInfoTitle,
-        style: MyAssetFonts.descriptionNameLink,
-      ),
+      child: Builder(builder: (context) {
+        final String moreInfoTitle =
+            context.select((MyProjectCubit cubit) => cubit.moreInfoTitle);
+        return Text(
+          moreInfoTitle,
+          style: MyAssetFonts.descriptionNameLink,
+        );
+      }),
     );
   }
 }

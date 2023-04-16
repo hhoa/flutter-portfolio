@@ -33,9 +33,6 @@ class MyAppBarMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> titleAppBar = context.read<MyAppBarCubit>().titleAppBar;
-    final String myName = context.read<MyAppBarCubit>().myName;
-
     return SafeArea(
       top: true,
       bottom: false,
@@ -57,20 +54,28 @@ class MyAppBarMobile extends StatelessWidget {
                         )
                       ]
                     : null),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(width: 48),
-                SpecialTextName(myName),
-                IconButton(
-                    key: const Key('appbar-icon-menu'),
-                    icon: Icon(
-                      Icons.menu,
-                      color: MyAssetColor.appColor,
-                    ),
-                    onPressed: () => openDialog(context, myName, titleAppBar)),
-              ],
-            ),
+            child: Builder(builder: (context) {
+              final String myName =
+                  context.select((HomeCubit cubit) => cubit.myName);
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(width: 48),
+                  SpecialTextName(myName),
+                  IconButton(
+                      key: const Key('appbar-icon-menu'),
+                      icon: Icon(
+                        Icons.menu,
+                        color: MyAssetColor.appColor,
+                      ),
+                      onPressed: () {
+                        final List<String> titleAppBar =
+                            context.read<MyAppBarCubit>().titleAppBar;
+                        openDialog(context, myName, titleAppBar);
+                      }),
+                ],
+              );
+            }),
           );
         },
       ),
@@ -189,30 +194,34 @@ class MyAppBarWeb extends StatelessWidget {
   }
 
   Widget _buildListTitle(BuildContext context, int currentSection) {
-    final List<String> titleAppBar = context.read<MyAppBarCubit>().titleAppBar;
-    final String myName = context.read<MyAppBarCubit>().myName;
+    return Builder(builder: (context) {
+      final List<String> titleAppBar =
+          context.select((MyAppBarCubit cubit) => cubit.titleAppBar);
+      final int nameIndex = titleAppBar.length ~/ 2;
+      return ListView.builder(
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (_, int index) {
+          if (index == nameIndex) {
+            return Builder(builder: (context) {
+              final String myName = context.read<HomeCubit>().myName;
+              return SpecialTextName(myName);
+            });
+          }
 
-    final int nameIndex = titleAppBar.length ~/ 2;
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (_, int index) {
-        if (index == nameIndex) {
-          return SpecialTextName(myName);
-        }
-
-        final int appBarIndex = index < nameIndex ? index : index - 1;
-        return NormalText(
-          titleAppBar[appBarIndex],
-          key: Key('normalText-${titleAppBar[appBarIndex]}'),
-          onTap: () => tapPage(context, appBarIndex),
-          isChosen: appBarIndex == currentSection,
-        );
-      },
-      itemCount: titleAppBar.length + 1,
-    );
+          final int appBarIndex = index < nameIndex ? index : index - 1;
+          return NormalText(
+            titleAppBar[appBarIndex],
+            key: Key('normalText-${titleAppBar[appBarIndex]}'),
+            onTap: () => tapPage(context, appBarIndex),
+            isChosen: appBarIndex == currentSection,
+          );
+        },
+        itemCount: titleAppBar.length + 1,
+      );
+    });
   }
 
   void tapPage(BuildContext context, int index) {

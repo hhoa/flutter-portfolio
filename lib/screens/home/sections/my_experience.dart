@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../enum/remote_config.dart';
 import '../../../model/experience_model.dart';
 import '../../../widgets/my_title.dart';
 import '../../../widgets/timeline_experience.dart';
@@ -14,11 +13,9 @@ class MyExperience extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeCubit homeCubit = context.read<HomeCubit>();
-    final List<ExperienceModel> experiences = experienceModelFromJson(
-        homeCubit.getRemoteConfigString(RemoteConfigEnum.experience));
-    final String expTitle =
-        homeCubit.getRemoteConfigString(RemoteConfigEnum.workExperienceText);
+    final List<ExperienceModel> experiences =
+        context.select((HomeCubit cubit) => cubit.experiences);
+    final String expTitle = context.select((HomeCubit cubit) => cubit.expTitle);
 
     return ListView.builder(
       itemBuilder: (_, int index) {

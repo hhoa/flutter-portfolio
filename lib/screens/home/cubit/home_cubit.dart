@@ -3,14 +3,41 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../enum/layout_type.dart';
 import '../../../enum/remote_config.dart';
+import '../../../model/contact_model.dart';
+import '../../../model/experience_model.dart';
 import '../../../repository/remote_config.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._remoteConfig) : super(HomeInitial());
+  HomeCubit(this._remoteConfig)
+      : myName = _remoteConfig.getValueString(RemoteConfigEnum.myNameText.key),
+        followMeText =
+            _remoteConfig.getValueString(RemoteConfigEnum.followMeText.key),
+        contacts = contactModelFromJson(
+            _remoteConfig.getValueString(RemoteConfigEnum.followMe.key)),
+        experiences = experienceModelFromJson(
+            _remoteConfig.getValueString(RemoteConfigEnum.experience.key)),
+        expTitle = _remoteConfig
+            .getValueString(RemoteConfigEnum.workExperienceText.key),
+        nameTitle =
+            _remoteConfig.getValueString(RemoteConfigEnum.nameTitleText.key),
+        introductionTitle = _remoteConfig
+            .getValueString(RemoteConfigEnum.myselfIntroductionText.key),
+        downloadCvTitle =
+            _remoteConfig.getValueString(RemoteConfigEnum.downloadCvText.key),
+        super(HomeInitial());
 
   final RemoteConfigRepository _remoteConfig;
+  final String myName;
+  final String followMeText;
+  final List<ContactModel> contacts;
+  final String expTitle;
+  final List<ExperienceModel> experiences;
+  final String nameTitle;
+  final String introductionTitle;
+  final String downloadCvTitle;
+
   LayoutType currentType = LayoutType.web;
   int currentSection = 0;
   bool isShadow = false;
