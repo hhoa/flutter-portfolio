@@ -25,3 +25,28 @@ class MyProjectUpdateCurrentPage extends MyProjectState {
   @override
   List<Object> get props => [currentPage];
 }
+
+class MyProjectUpdateDotAnimation extends MyProjectState {
+  MyProjectUpdateDotAnimation({
+    required this.offset,
+    required this.currentPage,
+    required this.nextPage,
+    required this.length,
+    this.isSwipeRight = true,
+  });
+
+  final double offset;
+  final int currentPage;
+  final int nextPage;
+  final bool isSwipeRight;
+  final int length;
+
+  @override
+  List<Object> get props => [
+        offset,
+        currentPage,
+        nextPage,
+        isSwipeRight,
+        length,
+      ];
+}

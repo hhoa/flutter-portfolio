@@ -4,14 +4,13 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 List<ProjectModel> projectModelFromJson(String str) => List<ProjectModel>.from(
     json.decode(str).map((x) => ProjectModel.fromJson(x)));
 
-String projectModelToJson(List<ProjectModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class ProjectModel {
-  ProjectModel({
+class ProjectModel extends Equatable {
+  const ProjectModel({
     required this.image,
     required this.description,
     required this.link,
@@ -27,9 +26,10 @@ class ProjectModel {
         link: json["link"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "image": image,
-        "description": description,
-        "link": link,
-      };
+  @override
+  List<Object?> get props => [
+        image,
+        description,
+        link,
+      ];
 }

@@ -8,9 +8,6 @@ List<ExperienceModel> experienceModelFromJson(String str) =>
     List<ExperienceModel>.from(
         json.decode(str).map((x) => ExperienceModel.fromJson(x)));
 
-String experienceModelToJson(List<ExperienceModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class ExperienceModel {
   ExperienceModel({
     required this.company,
@@ -31,11 +28,4 @@ class ExperienceModel {
         time: json["time"],
         logo: json["logo"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "company": company,
-        "description": description,
-        "time": time,
-        "logo": logo,
-      };
 }

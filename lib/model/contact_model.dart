@@ -7,9 +7,6 @@ import 'dart:convert';
 List<ContactModel> contactModelFromJson(String str) => List<ContactModel>.from(
     json.decode(str).map((dynamic x) => ContactModel.fromJson(x)));
 
-String contactModelToJson(List<ContactModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class ContactModel {
   ContactModel({
     required this.icon,
@@ -23,11 +20,6 @@ class ContactModel {
         icon: json["icon"],
         link: json["link"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "icon": icon,
-        "link": link,
-      };
 
   bool get isNull => icon == null || link == null;
 }

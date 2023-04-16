@@ -27,11 +27,47 @@ void main() {
     });
 
     test('updateCurrentProject', () {
-      myProjectCubit.updateCurrentProject(myProjectCubit.projectLength - 1);
+      myProjectCubit.handleScroll(-1);
       expect(myProjectCubit.state, MyProjectInitial());
 
-      myProjectCubit.updateCurrentProject(1);
-      expect(myProjectCubit.state, MyProjectUpdateCurrentPage(currentPage: 1));
+      myProjectCubit.handleScroll(5);
+      expect(myProjectCubit.state, MyProjectUpdateCurrentPage(currentPage: 5));
+
+      myProjectCubit.handleScroll(5.2);
+      expect(
+          myProjectCubit.state,
+          MyProjectUpdateDotAnimation(
+            offset: 0.20000000000000018,
+            currentPage: 5,
+            nextPage: 6,
+            isSwipeRight: true,
+            length: 7,
+          ));
+
+      myProjectCubit.handleScroll(4.8);
+      expect(
+          myProjectCubit.state,
+          MyProjectUpdateDotAnimation(
+            offset: 0.7999999999999998,
+            currentPage: 5,
+            nextPage: 4,
+            isSwipeRight: false,
+            length: 7,
+          ));
+
+      myProjectCubit.handleScroll(6);
+      expect(myProjectCubit.state, MyProjectUpdateCurrentPage(currentPage: 6));
+
+      myProjectCubit.handleScroll(6.2);
+      expect(
+          myProjectCubit.state,
+          MyProjectUpdateDotAnimation(
+            offset: 0.20000000000000018,
+            currentPage: 6,
+            nextPage: 0,
+            isSwipeRight: true,
+            length: 7,
+          ));
     });
   });
 }

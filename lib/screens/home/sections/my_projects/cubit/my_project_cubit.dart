@@ -9,21 +9,25 @@ part 'my_project_state.dart';
 
 class MyProjectCubit extends Cubit<MyProjectState> {
   MyProjectCubit(RemoteConfigRepository remoteConfigRepository)
-      : super(MyProjectInitial()) {
-    recentProjectsTitle = remoteConfigRepository
-        .getValueString(RemoteConfigEnum.recentProjectsText.key);
-    moreInfoTitle = remoteConfigRepository
-        .getValueString(RemoteConfigEnum.moreInfoText.key);
-    projects = projectModelFromJson(
-        remoteConfigRepository.getValueString(RemoteConfigEnum.project.key));
-    currentPage = projectLength - 1;
+      : recentProjectsTitle = remoteConfigRepository
+            .getValueString(RemoteConfigEnum.recentProjectsText.key),
+        moreInfoTitle = remoteConfigRepository
+            .getValueString(RemoteConfigEnum.moreInfoText.key),
+        projects = projectModelFromJson(remoteConfigRepository
+            .getValueString(RemoteConfigEnum.project.key)),
+        super(MyProjectInitial()) {
+    currentPage = projects.length - 1;
   }
 
-  late final List<ProjectModel> projects;
-  late final String recentProjectsTitle;
-  late final String moreInfoTitle;
+  final List<ProjectModel> projects;
+  final String recentProjectsTitle;
+  final String moreInfoTitle;
   int currentPage = 0;
   int currentFocus = -1;
+
+  int _nextPage = 0;
+  double _lastOffset = 0;
+  bool _isSwipeRight = true;
 
   int get projectLength => projects.length;
 
@@ -35,17 +39,42 @@ class MyProjectCubit extends Cubit<MyProjectState> {
     }
   }
 
-  int calculatePage(int index) {
-    if (projectLength % 2 == 0) {
-      return index % projectLength - 1;
+  void handleScroll(double page) {
+    if (page < 0) {
+      return;
     }
-    return index % projectLength;
-  }
 
-  void updateCurrentProject(int index) {
-    final int page = calculatePage(index);
-    if (page != currentPage) {
-      currentPage = page;
+    final cPage = currentPage;
+    final double offsetPage = page % projectLength;
+    if (offsetPage > _lastOffset) {
+      _nextPage = offsetPage.ceil();
+      currentPage = offsetPage.floor();
+      _isSwipeRight = true;
+    } else if (offsetPage < _lastOffset) {
+      _nextPage = offsetPage.floor();
+      currentPage = offsetPage.ceil();
+      _isSwipeRight = false;
+    } else {
+      _nextPage = currentPage;
+    }
+    if (_nextPage >= projectLength) {
+      _nextPage = 0;
+    }
+    if (currentPage >= projectLength) {
+      currentPage = 0;
+    }
+
+    final double offsetOnePage = offsetPage - offsetPage.floor();
+    emit(MyProjectUpdateDotAnimation(
+      offset: offsetOnePage,
+      currentPage: currentPage,
+      nextPage: _nextPage,
+      isSwipeRight: _isSwipeRight,
+      length: projectLength,
+    ));
+
+    _lastOffset = offsetPage;
+    if (cPage != currentPage) {
       emit(MyProjectUpdateCurrentPage(currentPage: currentPage));
     }
   }

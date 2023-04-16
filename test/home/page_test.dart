@@ -9,6 +9,7 @@ import 'package:flutter_app_web/screens/home/sections/my_contact.dart';
 import 'package:flutter_app_web/screens/home/sections/my_experience.dart';
 import 'package:flutter_app_web/screens/home/sections/my_profile.dart';
 import 'package:flutter_app_web/screens/home/sections/my_projects/view/page.dart';
+import 'package:flutter_app_web/screens/home/sections/my_projects/widgets/dots_animation.dart';
 import 'package:flutter_app_web/screens/home/sections/my_projects/widgets/project_image_description.dart';
 import 'package:flutter_app_web/screens/home/view/page.dart';
 import 'package:flutter_app_web/widgets/normal_text.dart';
@@ -333,8 +334,11 @@ void main() {
       expect(find.text('Ninja Biz App - Help shippers to manage their orders'),
           findsOneWidget);
 
-      await tester.tap(find.text('More info'));
+      expect(find.byType(DotsAnimation), findsNothing);
+      await tester.drag(
+          find.byKey(const Key('project-pageview')), const Offset(300, 0));
       await tester.pumpAndSettle();
+      expect(find.byType(DotsAnimation), findsOneWidget);
     });
   });
 }
