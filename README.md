@@ -1,16 +1,59 @@
 # flutter_app_web
 
-A new Flutter application.
+A Flutter application to demonstrate my portfolio. It can be run on Web, iOS and Android.
 
-## Getting Started
+## Table of contents
 
-This project is a starting point for a Flutter application.
+- [Prerequisites](#prerequisites)
+- [Development](#development)
+- [Folder structure](#folder-structure)
+- [Deployment](#deployment)
 
-A few resources to get you started if this is your first Flutter project:
+## Prerequisites
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- If you don't have Flutter setup yet. Please refer to the [Flutter Documentation page](https://docs.flutter.dev/get-started/install) for the setup.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Development
+
+Please follow these steps in order.
+
+- **Use Flutter version [set in pubspec.yaml](https://github.com/hhoa/flutter-portfolio/blob/feature/flutter-3/pubspec.yaml#L22)**
+
+  ```shell
+  cd $(which flutter)/../.. && git checkout X.Y.Z && flutter precache
+  ```
+  
+Then you can clone this project and run
+
+```shell
+cd flutter-portfolio;flutter pub get
+```
+
+## Folder structure
+
+```txt
+assets // contains fonts and images used in this app
+lib // library folder
+  enum // app enum
+  model // data models and classes
+  repository // remote config repo
+  res // contains colors, contants, fonts and images used across the app
+  route // app routes
+  screens // app screens
+  widgets // reusable widgets
+  main.dart // application entry point
+test // widget/unit tests located here
+```
+
+## Deployment
+
+```shell
+flutter build web
+firebase init hosting
+```
+
+Then follow the steps in terminal. After that we can run this command
+
+```shell
+firebase deploy
+```
