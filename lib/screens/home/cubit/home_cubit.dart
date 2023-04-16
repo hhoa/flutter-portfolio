@@ -13,7 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
   final RemoteConfigRepository _remoteConfig;
   LayoutType currentType = LayoutType.web;
   int currentSection = 0;
-  bool _isShadow = false;
+  bool isShadow = false;
 
   void updateLayoutType(double screenWidth) {
     if (screenWidth > 950) {
@@ -29,21 +29,24 @@ class HomeCubit extends Cubit<HomeState> {
     currentType = LayoutType.phone;
   }
 
-  void updateShadow(int index) {
+  void _updateShadow(int index) {
     final bool isFirstSection = index == 0;
-    if (isFirstSection && _isShadow) {
-      _isShadow = false;
-      emit(HomeUpdateShadow(isShadow: _isShadow));
-    } else if (!isFirstSection && !_isShadow) {
-      _isShadow = true;
-      emit(HomeUpdateShadow(isShadow: _isShadow));
+    if (isFirstSection && isShadow) {
+      isShadow = false;
+    } else if (!isFirstSection && !isShadow) {
+      isShadow = true;
     }
   }
 
   void changePageIndex(int index, {bool isScroll = true}) {
     if (index != currentSection) {
       currentSection = index;
-      emit(HomeUpdateCurrentSection(index: index, isScroll: isScroll));
+      _updateShadow(index);
+      emit(HomeUpdateCurrentSection(
+        index: index,
+        isScroll: isScroll,
+        hasShadow: isShadow,
+      ));
     }
   }
 

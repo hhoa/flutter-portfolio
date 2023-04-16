@@ -39,14 +39,10 @@ class MyAppBarMobile extends StatelessWidget {
     return SafeArea(
       top: true,
       bottom: false,
-      child: BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: (HomeState prev, HomeState current) =>
-            current is HomeUpdateShadow,
-        builder: (context, state) {
-          bool isShadow = false;
-          if (state is HomeUpdateShadow) {
-            isShadow = state.isShadow;
-          }
+      child: Builder(
+        builder: (context) {
+          final bool isShadow =
+              context.select((HomeCubit cubit) => cubit.isShadow);
           return Container(
             key: const Key('container-appbar-mobile'),
             height: MyConstants.heightAppBar,
@@ -162,81 +158,60 @@ class MyAppBarWeb extends StatelessWidget {
       onExit: (_) {
         context.read<MyAppBarCubit>().updateHover(isHover: false);
       },
-      child: BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: (HomeState prev, HomeState current) =>
-            current is HomeUpdateShadow,
-        builder: (context, state) {
-          bool isShadow = false;
-          if (state is HomeUpdateShadow) {
-            isShadow = state.isShadow;
-          }
+      child: Builder(builder: (context) {
+        final bool isShadow =
+            context.select((HomeCubit cubit) => cubit.isShadow);
+        final int currentSection =
+            context.select((HomeCubit cubit) => cubit.currentSection);
+        final bool isHover = context.select((MyAppBarCubit cubit) =>
+            (cubit.state is MyAppBarHover &&
+                (cubit.state as MyAppBarHover).isHover));
 
-          return BlocBuilder<MyAppBarCubit, MyAppBarState>(
-            buildWhen: (prev, current) => current is MyAppBarHover,
-            builder: (context, state) {
-              bool isHover = false;
-              if (state is MyAppBarHover) {
-                isHover = state.isHover;
-              }
-              return Container(
-                key: const Key('container-appbar-web'),
-                height: MyConstants.heightAppBar,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color:
-                        isHover ? Colors.white : MyAssetColor.backgroundColor,
-                    boxShadow: isShadow
-                        ? [
-                            const BoxShadow(
-                                color: Colors.black12,
-                                offset: Offset(0, 4),
-                                blurRadius: 4,
-                                spreadRadius: 4)
-                          ]
-                        : null),
-                child: _buildListTitle(context),
-              );
-            },
-          );
-        },
-      ),
+        return Container(
+          key: const Key('container-appbar-web'),
+          height: MyConstants.heightAppBar,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: isHover ? Colors.white : MyAssetColor.backgroundColor,
+              boxShadow: isShadow
+                  ? [
+                      const BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(0, 4),
+                          blurRadius: 4,
+                          spreadRadius: 4)
+                    ]
+                  : null),
+          child: _buildListTitle(context, currentSection),
+        );
+      }),
     );
   }
 
-  Widget _buildListTitle(BuildContext context) {
+  Widget _buildListTitle(BuildContext context, int currentSection) {
     final List<String> titleAppBar = context.read<MyAppBarCubit>().titleAppBar;
     final String myName = context.read<MyAppBarCubit>().myName;
 
-    return BlocBuilder<HomeCubit, HomeState>(
-      buildWhen: (prev, current) => current is HomeUpdateCurrentSection,
-      builder: (context, state) {
-        int currentSection = 0;
-        if (state is HomeUpdateCurrentSection) {
-          currentSection = state.index;
+    final int nameIndex = titleAppBar.length ~/ 2;
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (_, int index) {
+        if (index == nameIndex) {
+          return SpecialTextName(myName);
         }
 
-        final int nameIndex = titleAppBar.length ~/ 2;
-        return ListView.builder(
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (_, int index) {
-            if (index == nameIndex) {
-              return SpecialTextName(myName);
-            }
-
-            final int appBarIndex = index < nameIndex ? index : index - 1;
-            return NormalText(
-              titleAppBar[appBarIndex],
-              key: Key('normalText-${titleAppBar[appBarIndex]}'),
-              onTap: () => tapPage(context, appBarIndex),
-              isChosen: appBarIndex == currentSection,
-            );
-          },
-          itemCount: titleAppBar.length + 1,
+        final int appBarIndex = index < nameIndex ? index : index - 1;
+        return NormalText(
+          titleAppBar[appBarIndex],
+          key: Key('normalText-${titleAppBar[appBarIndex]}'),
+          onTap: () => tapPage(context, appBarIndex),
+          isChosen: appBarIndex == currentSection,
         );
       },
+      itemCount: titleAppBar.length + 1,
     );
   }
 

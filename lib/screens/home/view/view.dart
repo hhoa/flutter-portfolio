@@ -35,7 +35,6 @@ class _HomeViewState extends State<HomeView> {
         itemPositionsListener.itemPositions.value.toList();
     final int firstIndex = itemPositions[0].index;
 
-    context.read<HomeCubit>().updateShadow(firstIndex);
     context.read<HomeCubit>().changePageIndex(firstIndex, isScroll: false);
   }
 
@@ -47,6 +46,8 @@ class _HomeViewState extends State<HomeView> {
         return Scaffold(
             backgroundColor: MyAssetColor.backgroundColor,
             body: BlocListener<HomeCubit, HomeState>(
+              listenWhen: (HomeState prev, HomeState current) =>
+                  current is HomeUpdateCurrentSection,
               listener: (context, state) {
                 if (state is HomeUpdateCurrentSection) {
                   if (state.isScroll) {
@@ -57,8 +58,6 @@ class _HomeViewState extends State<HomeView> {
                   }
                 }
               },
-              listenWhen: (HomeState prev, HomeState current) =>
-                  current is HomeUpdateCurrentSection,
               child: Column(
                 children: [
                   // ignore: prefer_const_constructors

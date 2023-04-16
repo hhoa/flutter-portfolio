@@ -11,25 +11,17 @@ class HomeUpdateCurrentSection extends HomeState {
   HomeUpdateCurrentSection({
     required this.index,
     this.isScroll = false,
+    this.hasShadow = false,
   });
 
   final int index;
   final bool isScroll;
+  final bool hasShadow;
 
   @override
   List<Object> get props => [
         index,
         isScroll,
+        hasShadow,
       ];
-}
-
-class HomeUpdateShadow extends HomeState {
-  HomeUpdateShadow({
-    required this.isShadow,
-  });
-
-  final bool isShadow;
-
-  @override
-  List<Object> get props => [isShadow];
 }
