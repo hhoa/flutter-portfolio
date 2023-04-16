@@ -42,7 +42,7 @@ class MyProjectCubit extends Cubit<MyProjectState> {
     return index % projectLength;
   }
 
-  void updateCurrentPage(int index) {
+  void updateCurrentProject(int index) {
     final int page = calculatePage(index);
     if (page != currentPage) {
       currentPage = page;

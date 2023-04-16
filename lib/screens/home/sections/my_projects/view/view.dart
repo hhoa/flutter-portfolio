@@ -46,7 +46,7 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
     _pageController = PageController(
         initialPage: cubit.currentPage, viewportFraction: widget.viewPort);
     _pageController.addListener(() {
-      cubit.updateCurrentPage(_pageController.page!.toInt());
+      cubit.updateCurrentProject(_pageController.page!.toInt());
     });
   }
 
