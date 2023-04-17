@@ -68,30 +68,32 @@ class _MyPageViewProjectsState extends State<MyPageViewProjects> {
         SizedBox(
           height: projectHeight,
           width: screenWidth,
-          child: BlocBuilder<MyProjectCubit, MyProjectState>(
-            buildWhen: (prev, current) => current is MyProjectUpdateCurrentPage,
-            builder: (context, state) {
-              return PageView.builder(
-                  key: const Key('project-pageview'),
-                  controller: _pageController,
-                  itemBuilder: (context, index) {
-                    final MyProjectCubit cubit = context.read<MyProjectCubit>();
-                    final int page = index % cubit.projectLength;
-                    final ProjectModel model = cubit.projects[page];
+          child: Builder(builder: (context) {
+            final List<ProjectModel> projects =
+                context.select((MyProjectCubit cubit) => cubit.projects);
+            return PageView.builder(
+                key: const Key('project-pageview'),
+                controller: _pageController,
+                itemBuilder: (context, index) {
+                  final int page = index % projects.length;
+                  final ProjectModel model = projects[page];
 
-                    return SizedBox(
-                      width: screenWidth / 2,
-                      height: projectHeight,
-                      child: ProjectImageDescription(
+                  return SizedBox(
+                    width: screenWidth / 2,
+                    height: projectHeight,
+                    child: Builder(builder: (context) {
+                      final int currentPage = context
+                          .select((MyProjectCubit cubit) => cubit.currentPage);
+                      return ProjectImageDescription(
                         model.image,
                         description: model.description,
                         link: model.link,
-                        isCurrent: cubit.currentPage == page,
-                      ),
-                    );
-                  });
-            },
-          ),
+                        isCurrent: currentPage == page,
+                      );
+                    }),
+                  );
+                });
+          }),
         ),
         BlocBuilder<MyProjectCubit, MyProjectState>(
           buildWhen: (prev, current) => current is MyProjectUpdateDotAnimation,

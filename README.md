@@ -52,7 +52,10 @@ flutter build web
 firebase init hosting
 ```
 
-Then follow the steps in terminal. After that we can run this command
+Then follow the steps in terminal. In question `What do you want to use as your public directory?` 
+-> use `build/web` instead of `public`
+
+After that we can run this command
 
 ```shell
 firebase deploy

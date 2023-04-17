@@ -14,7 +14,8 @@ class MyProjects extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => MyProjectCubit(context.read<RemoteConfigRepository>()),
-      child: const MyProjectsView(),
+      // ignore: prefer_const_constructors
+      child: MyProjectsView(),
     );
   }
 }

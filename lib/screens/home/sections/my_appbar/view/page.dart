@@ -12,7 +12,8 @@ class MyAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => MyAppBarCubit(context.read<RemoteConfigRepository>()),
-      child: const MyAppBarView(),
+      // ignore: prefer_const_constructors
+      child: MyAppBarView(),
     );
   }
 }
