@@ -7,6 +7,7 @@ A Flutter application to demonstrate my portfolio. It can be run on Web, iOS and
 - [Prerequisites](#prerequisites)
 - [Development](#development)
 - [Folder structure](#folder-structure)
+- [Generate coverage report](#generate-coverage-report)
 - [Deployment](#deployment)
 
 ## Prerequisites
@@ -43,6 +44,24 @@ lib // library folder
   widgets // reusable widgets
   main.dart // application entry point
 test // widget/unit tests located here
+```
+
+## Generate coverage report
+
+1. This command runs the tests and stores the coverage info to coverage/lcov.info
+```bash
+flutter test --coverage
+```
+
+2. Install lcov into your machine (if don't have). Command to install: <code>brew install lcov</code><br>
+   Once installed, run below command to generate html files:
+```bash
+genhtml coverage/lcov.info -o coverage
+```
+
+3. Open generated index.html in browser (located in <code>coverage/</code> folder) to view it.
+```bash
+open coverage/index.html 
 ```
 
 ## Deployment
